@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/aui.css" />
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>底部导航</title>
+		<link rel="stylesheet" type="text/css" href="css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<style>
+			header {
+				background-color: #0084f4;
+			}
+			header div {
+				height: 45px;
+				line-height: 45px;
+				text-align: center;
+				display: none;
+				color: #FFFFFF;
+				position: relative;
+				font-size: 18px;
+			}
+			header div.active {
+				display: block;
+			}
+			#footer {
+				background-color: #F9F9F9;
+			}
+			#footer ul li {
+				margin: 5px 0 0;
+				padding-top: 21px;
+				padding-bottom:5px;
+				background: url() no-repeat center 1px;
+				background-size: 20px;
+				text-align:center;
+				color:#aeaeae;
+			}
+			#footer ul li.active {
+				color: #0084f4;
+			}
+			#footer ul li:nth-child(1) {
+				background-image: url(image/home@3x.png);
+			}
+			#footer ul li:nth-child(2) {
+				background-image: url(image/cx@3x.png);
+			}
+			#footer ul li:nth-child(3) {
+				background-image: url(image/sst@3x.png);
+			}
+			#footer ul li:nth-child(1).active {
+				background-image: url(image/home-2@3x.png);
+			}
+			#footer ul li:nth-child(2).active {
+				background-image: url(image/cx2@3x.png);
+			}
+			#footer ul li:nth-child(3).active {
+				background-image: url(image/set2@3x.png);
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap" class="flex-wrap flex-vertical">
+			<header id="header">
+				<div class="active" >广州市质量技术监督局</div>
+				<div class="border-b " >查询</div>
+				<div class="border-b" >设置</div>
+			</header>
+			<div id="main" class="flex-con"></div>
+			<div id="footer" class="border-t">
+				<ul class="flex-wrap" >
+					<li tapmode="hover" class="flex-con active" onclick="switchGroup(this,0)">首页</li>
+					<li tapmode="hover" class="flex-con" onclick="switchGroup(this,1)" >查询</li>
+					<li tapmode="hover" class="flex-con" onclick="switchGroup(this,2)" >设置</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+	    /*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+		//  
+		api.setStatusBarStyle({
+            style: 'light',
+			color: '#0084f4'
+        });
+		api.addEventListener({
+	        name:'keyback'
+        },function(ret,err){
+        	api.closeWidget({
+	            id: 'A6927244856828'
+            });
+        });
+		api.openFrameGroup({
+			name : 'group',
+			scrollEnabled : false,
+			bounces : true,
+			background : '#fff',
+			rect : {
+				x : 0,
+				y : $api.dom('#header').offsetHeight,
+				w : api.winWidth,
+				h : $api.dom('#main').offsetHeight  
+			},
+			preload : 1,
+			index : 0,
+			frames : [{
+				name : 'frame0',
+				bounces : false,
+				url : 'html/frame0.html'
+			},{
+				name : 'frame1',
+				bounces : false,
+				url : 'html/frame1.html'
+			},{
+				name : 'frame2',
+				bounces : false,
+				url : 'html/frame2.html'
+			}]
+		}, function(ret, err) {
+			 if (ret) {
+			 }
+		   }
+		);
+	}
+	
+	function switchGroup(tag,index) {
+
+		if (tag == $api.dom('#footer li.active'))
+			return;
+		var eFootLis = $api.domAll('#footer li'), eHeaderLis = $api.domAll('header div');
+		for (var i = 0, len = eFootLis.length; i < len; i++) {
+			$api.removeCls(eFootLis[i], 'active');
+			$api.removeCls(eHeaderLis[i], 'active');
+		}
+		$api.addCls(eFootLis[index], 'active');
+		$api.addCls(eHeaderLis[index], 'active');
+		api.setFrameGroupIndex({
+            name: 'group',
+            index: index
+        });
+	}
+	
+</script>

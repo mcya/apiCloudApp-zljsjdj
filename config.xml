@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget id="A6948565741557" version="0.0.1"> 
+  <name>gzqApp</name>  
+  <description/>  
+  <author email="377974177@qq.com" href="http://www.apicloud.com">PANCCC</author>  
+  <content src="index.html"/>  
+  <preference name="appBackground" value="rgba(0,0,0,0.0)"/>  
+  <preference name="windowBackground" value="rgba(0,0,0,0.0)"/>  
+  <preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>  
+  <preference name="autoLaunch" value="true"/>  
+  <preference name="autoUpdate" value="false"/>  
+  <preference name="smartUpdate" value="true"/>  
+  <preference name="debug" value="true"/>  
+  <preference name="iOS7StatusBarAppearance" value="false"/>  
+  <preference name="statusBarAppearance" value="false"/>  
+  <preference name="softInputMode" value="resize"/>  
+  <permission name="location"/>  
+  <permission name="internet"/>  
+  <access origin="*"/>  
+  <feature name="sinaWeiBo"> 
+    <param name="urlScheme" value="wb1157775741"/>  
+    <param name="apiKey" value="1157775741"/>  
+    <param name="registUrl" value="http://www.apicloud.com"/> 
+  </feature> 
+</widget>
