@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>企业备案公告查询</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+    	html{
+    		font-size: 62.5%;
+    	}
+    	body{
+    		font-size: 1.4rem;
+    		background-color: #f6f6f6;
+    	}
+    	#header{
+    	    background-color:#0084F4;
+    	}
+    	#header div {
+				height: 5rem;
+				line-height: 5rem;
+				text-align: center;
+				color: #FFFFFF;
+				position: relative;
+				font-size: 1.8rem;
+	    }
+    	#header .left{
+		   background: url(../../image/less@3x.png) no-repeat  left center;
+		   background-size: 1.2rem 1.9rem;
+		   height: 100%;
+		   width: 5rem;
+		   color: #fff;
+		   padding-left: 1.9rem;
+		   font-size: 1.4rem;
+		}
+		#header .center{
+		    width: 16rem;
+		    margin:0 auto;
+			text-align: center;
+			color: #FFFFFF;
+			position: relative;
+			font-size: 1.8rem;
+			overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+		}
+		#header .right{
+		    float: right;
+		    margin-right: 1rem;
+		    background: url(../../image/sxi@3x.png) no-repeat  right center;
+		    background-size: 1.8rem 1.8rem;
+		    width: 5rem;
+		}
+		#main{
+    	   background-color: #ffffff;
+    	   font-size: 1.6rem;
+        }
+        #main .row{
+           border-bottom: 1px solid #e1dbdb;
+           padding: 1rem 1rem 1.2rem;    
+           word-break: break-all;
+        }
+        #main .content{
+           background-image: url(../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: .8rem 1.3rem;
+           padding-right: 2.4rem;
+        }
+        #main .userInfo{
+           margin-top: .7rem;
+           font-size: 1.4rem;
+           color: #6a6767;
+        }
+        #dialog{
+           display: none;
+           position: absolute;
+           width: 100%;
+           background-color: #ffffff;
+           font-size: 1.6rem;
+           border:2px solid #eeeeee;
+        }
+        #dialog input{
+           width: 5rem;
+           border-bottom:2px solid  #000000;
+        }
+        #dialog .row-time{
+           padding: 1rem;
+        }
+        .btnhover{
+           background-color: #00aeef !important;
+        }
+        .backBox{
+           float: left;
+           width: 6rem;
+           height: 100%;
+           padding-left: 1rem;
+        }    
+    </style>
+</head>
+<body>
+	    <header id="header">
+	        <div class="backBox" tapmode="btnhover">
+	            <div class="left" onclick="goBack()">返回</div>
+	        </div>
+	        <div class="right" onclick="toggle()"></div>
+			<div class="center">企业备案公告查询</div>
+		</header>
+		<div id="dialog">
+		    <div class="row-time">
+		        <span>公告期号：<input type="text"/>年</span>
+		        <span>第<input type="text"/>期</span>
+		    </div>
+		    <div class="row-time">
+		        <span>公告日期：从<input type="text"/>到<input type="text"/></span>
+		    </div>
+		</div>
+		<div id="main">
+        <ul>
+            <li class="row" onclick="openbeian0()">
+                <div class="content">
+                    <div>2016年第7期1</div>
+                    <div class="userInfo">2016-07-06</div>
+                </div>
+            </li>
+            <li class="row" onclick="openbeian0()">
+                <div class="content">
+                    <div>2016年第8期</div>
+                    <div class="userInfo">2016-07-08</div>
+                </div>
+            </li>
+        </ul>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery-3.0.0.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		/*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+	};
+	
+	function goBack(){
+		api.closeWin({});
+    }
+    
+    function openbeian0(){
+        api.openWin({
+	        name: 'beian_child0',
+	        url: 'beian_child0.html',
+	        animation:{type:"none"}
+        });
+    }
+    
+    function toggle(){
+        $('#dialog').slideToggle('fast');
+    }
+</script>
+</html>

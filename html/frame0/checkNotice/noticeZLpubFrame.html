@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>质量分享</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+    <style>
+    html{
+        font-size: 62.5%;
+    }
+    body{
+        background-color:#ffffff;
+    }
+    ul,li{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    #contentBox{
+    	background-color: #ffffff;
+    	word-break: break-all;
+    	padding: 0 10px;
+    }
+    #contentBox .center{
+        text-align: center;
+    }
+    #contentBox .right{
+        text-align: right;
+    }
+    #contentBox .center div{
+        margin: 14px 0 10px;
+        font-size: 18px;
+        color: #000000;
+    }
+    #contentBox li{
+        margin-bottom:14px;
+        color: #484848;
+    }
+	.hide{
+	   display: none;
+	}
+	/*#content p,span,font{
+	   font-size: 14px !important;
+	   word-break: break-all;
+	}*/
+	.period{
+	   font-size:18px;
+	}
+    </style>
+</head>
+<body>
+    <div id='contentBox'>
+        <ul>
+            <li class="center">
+                <div>
+		  	       <!--ajax加载数据区域-->
+		  	    </div>
+				<p class="period"><p>
+            <li>
+            <li id="content">
+		       <!--ajax加载数据区域-->
+		    </li>
+        </ul>
+    </div>						
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript">
+	
+	apiready = function(){
+	
+		var pageParam = api.pageParam;
+		var html = pageParam.content;
+		var titleHtml = pageParam.title;
+		var period = pageParam.period;
+		var reg= new RegExp('href="',"g");
+		var newhtml=html.replace(reg,'href="'+util.getHttps()); 
+		$api.html($api.dom('#content'),html);
+		$api.html($api.dom('#.period'),period);
+		$api.html($api.dom('#contentBox .center div'),titleHtml);
+		/*$("a").each(function (){
+            $(this).css("cursor", "default");
+            $(this).click(function (event) {
+                event.preventDefault();   
+            })
+        });*/ 
+	};
+	
+    /*function share(){
+        api.openFrame({
+	        name: 'noticeShare',
+	        url: 'noticeShare.html',
+	        rect: {
+		          x:0,
+		          y:0,
+		          w:'auto',
+		          h:'auto'
+	        }
+        });
+    }*/
+</script>
+</html>

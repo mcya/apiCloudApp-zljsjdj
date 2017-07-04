@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知公告标题</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+    <style>
+    html{
+        font-size: 62.5%;
+    }
+    body{
+        background-color:#f6f6f6;
+    }
+    #header{
+    	background-color:#0084F4;
+    }
+    #header div {
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+		color: #FFFFFF;
+		position: relative;
+	    font-size: 18px;
+	}
+    #header .left{
+	    background: url(../../../image/less@3x.png) no-repeat  left center;
+		background-size: 12px 19px;
+		height: 100%;
+		width: 50px;
+		color: #fff;
+		padding-left: 19px;
+		font-size: 14px;
+	}
+	#header .center{
+		width:100px;
+		margin:0 auto;
+	    text-align: center;
+	    color: #FFFFFF;
+	    position: relative;
+		font-size: 18px;
+	}
+    #main{
+    	background-color:#ffffff;
+    }
+	.btnhover{
+        background-color: #00aeef !important;
+    }
+    .backBox{
+       float: left;
+       width: 60px;
+       height: 100%;
+       padding-left: 10px;
+    }
+    </style>
+</head>
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+         <header id="header">
+             <div class="backBox" tapmode="btnhover">
+	            <div class="left" onclick="goBack()">返回</div>
+	         </div>
+	         <div class="center">
+	             <!--ajax加载标题-->
+	         </div>
+         </header>
+         <div id='main' class="flex-con">
+        
+        </div>
+    </div>	
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript">
+
+	apiready = function(){
+		/*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+		api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+		var pageParam = api.pageParam; 
+		var catalogId= pageParam.catalogId;
+		//alert(pageParam.catalogId+'-'+pageParam.catalogName);
+		
+		$api.text($api.dom('#header .center'), pageParam.catalogName);
+		
+		api.openFrame({
+            name: 'noticeZLframe',
+            url: 'noticeZLframe.html',
+            rect: {
+                x: 0,
+                y: $api.dom('#header').offsetHeight,
+                w: 'auto',
+                h: $api.dom('#main').offsetHeight
+            },
+            pageParam: {
+                id: catalogId
+            },
+            bounces: true,
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+	};
+	
+	function goBack(){
+	    api.openWin({
+	        name: 'noticeMain',
+	        url: 'noticeMain.html',
+	        vScrollBarEnabled: false,
+	        hScrollBarEnabled: false,
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        }); 
+		api.closeWin({});
+    }
+
+</script>
+</html>

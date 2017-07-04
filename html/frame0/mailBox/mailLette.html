@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我要投信</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../css/report.css"/>
+    <style>
+    </style>
+</head>
+<body>
+    <div id="topBanner"></div>
+    <div style="height:10px;width:100%;"></div>
+    <form id="form" action="">
+        <div class="row flex-wrap ">
+            <div class="columnName"><span>*</span>发表人</div>
+            <input class="flex-con" name="name" type="text" placeholder="请输入发表人"/>
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName"><span>*</span>联系电话</div>
+            <input class="flex-con" name="phone" type="text" placeholder="请输入联系电话"/>
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName"><span>*</span>邮箱地址</div>
+            <input class="flex-con" name="email" type="text" placeholder="请输入邮箱地址"/>
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName">联系地址</div>
+            <input class="flex-con" name="address" type="text" placeholder="请输入联系地址"/>
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName">身份证号</div>
+            <input class="flex-con" name="identityCard" type="text" placeholder="请输入身份证号"/>
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName"><span>*</span>主题</div>
+            <input class="flex-con" name="subject" type="text" placeholder="请输入主题"/>
+        </div>
+        <div class="row-bg flex-wrap">
+            <div class="columnName"><span>*</span>内容</div>
+            <textarea class="flex-con" name="content" placeholder="请输入内容"></textarea>
+        </div>
+        <div class="row-yzm">
+            <div class="columnName"><span>*</span>验证码</div>
+            <input type="text" name="verificationCode" placeholder="请输入验证码" />
+			<img id="yzmImg" />
+        </div>
+		<div id="warning"></div>
+        <div  class="submit">提交
+            <input type="button" onclick="report()" />
+        </div>
+    </form>
+    <div id="footer" style="height:20px;width:100%;"></div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript"> 
+	apiready = function(){
+		document.getElementById('yzmImg').src=util.imgUrl();
+	    document.getElementById('yzmImg').onclick=function(){
+	        this.src=util.imgUrl();
+	    }
+		api.addEventListener({
+		    name: 'closeDialog'
+	    },function(ret,err){
+		    switchPage();
+		});
+	};
+	function report(){
+	    var name=$api.dom('input[name="name"]');
+		if(name.value==''){
+		   api.toast({msg: '请输入发表人'});
+		   return false;
+		}
+		var phone=$api.dom('input[name="phone"]');
+		if(phone.value==''){
+		   api.toast({msg: '请输入联系电话'});
+		   return false;
+		}
+		var regNum= /^\d+$/;
+		if(!regNum.test(phone.value)){
+		    api.toast({msg: '请输入正确的联系电话'});
+		    return false; 
+		};
+		var email=$api.dom('input[name="email"]');
+		if(email.value==''){
+		   api.toast({msg: '请输入邮箱地址'});
+		   return false;
+		}
+		var regEmail= /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		if(!regEmail.test(email.value)){
+		    api.toast({msg: '请输入正确的邮箱地址'});
+		    return false; 
+		}
+		var address=$api.dom('input[name="address"]');
+		var identityCard=$api.dom('input[name="identityCard"]');
+		var subject=$api.dom('input[name="subject"]');
+		if(subject.value==''){
+		   api.toast({msg: '请输入主题'});
+		   return false;
+		}
+		var content=$api.dom('textarea[name="content"]');
+		if(content.value==''){
+		   api.toast({msg: '请输入内容'});
+		   return false;
+		}
+		var verificationCode=$api.dom('input[name="verificationCode"]');
+		if(verificationCode.value==''){
+		   api.toast({msg: '请输入验证码'});
+		   return false;
+		}
+	    var params={
+		    values:{
+			    name: name.value,
+				phone: name.value,
+				email: email.value,
+				address: address.value,
+				identityCard: identityCard.value,
+				subject: subject.value,	
+			    content: content.value,
+				verificationCode: verificationCode.value
+			}
+		}
+		util.post('mailbox/add',params,function(ret){
+		    if(!ret.respCode){
+			    $api.val(name,'');
+				$api.val(phone,'');
+				$api.val(email,'');
+				$api.val(address,'');
+				$api.val(identityCard,'');
+				$api.val(subject,'');
+				$api.val(content,'');
+				$api.val(verificationCode,'');
+				document.getElementById('yzmImg').src=util.imgUrl();
+			    /*var warning=document.getElementById("warning");
+			    warning.innerHTML='<div class="row-warning">'+ret.errorMsg+'</div>'; */
+				var message=ret.errorMsg;
+				var pos=message.indexOf("：")+1;
+				var identifier=message.substring(pos);
+				openDialog(identifier);
+				/*alert("提交成功！你的信件号码"+identifier+"已复制到剪切板");
+                var clipBoard = api.require('clipBoard');
+                clipBoard.set({
+                    value: identifier
+                },function(ret, err){
+                });*/			
+			}else{
+		        api.toast({msg: ret.errorMsg});
+		    }
+		});
+	}
+	 
+	function openDialog(param){
+	    api.openFrame({
+		    pageParam: {
+                identifier: param
+            },
+	        name: 'dialog',
+	        url: 'dialog.html',
+	        bounces:false,
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+    function switchPage(){
+	    api.sendEvent({   //发送切换栏目和重新加载查看信件页面事件
+            name: 'mailSwitch'
+        });	
+		api.setFrameGroupIndex({
+            name: 'mailGroup',
+            index: 0,
+            scroll: true
+        });
+	} 
+	 
+	
+</script>
+</html>

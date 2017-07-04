@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我要咨询</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../css/report.css"/>
+    <style>
+        .row-warning{padding-top: 15px}
+    </style>
+</head>
+<body>
+    <div id="topBanner"></div>
+	<div style="height:10px;"></div>
+    <form id="form" action="">
+        <div class="row flex-wrap">
+            <div class="columnName"><span>*</span>标题</div>
+            <input class="flex-con" name="title" type="text" placeholder="请输入主题"/>
+        </div>
+        <div class="row-bg flex-wrap">
+            <div class="columnName"><span>*</span>内容</div>
+            <textarea class="flex-con" name="content" placeholder="请输入内容"></textarea>
+        </div>
+        <div class="row-yzm">
+            <div class="columnName"><span>*</span>验证码</div>
+            <input type="text" name="verificationCode" placeholder="请输入验证码" />
+			<img id="yzmImg" />
+        </div>
+		<div id="warning"></div>
+        <div  class="submit">提交
+            <input type="button" onclick="report()" />
+        </div>
+    </form>
+    <div id="footer"></div>
+	
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		document.getElementById('yzmImg').src=util.imgUrl();
+	    document.getElementById('yzmImg').onclick=function(){
+	        this.src=util.imgUrl();
+	    }
+		api.addEventListener({
+		    name: 'closeDialog'
+	    },function(ret,err){
+		    switchPage();
+		});
+	};
+	
+	function report(){
+	    var title=$api.dom('input[name="title"]');
+		var content=$api.dom('textarea[name="content"]');
+		var verificationCode=$api.dom('input[name="verificationCode"]');
+		if(title.value==''){
+		    api.toast({msg: "请输入标题"});
+			return false;
+		}
+		if(content.value==''){
+		    api.toast({msg: "请输入内容"});
+			return false;
+		}
+		if(verificationCode.value==''){
+		    api.toast({msg: "请输入验证码"});
+			return false;
+		}
+	    var params={
+		    values:{
+		        title: title.value,
+			    content: content.value,
+			    verificationCode: verificationCode.value
+			}
+		}
+		util.post('xzfy/consult/add',params,function(ret){
+		    if(!ret.respCode){
+		        $api.val(title,'');
+				$api.val(content,'');
+				$api.val(verificationCode,'');
+				document.getElementById('yzmImg').src=util.imgUrl();
+				openDialog();
+                			
+			}else{
+			    api.toast({msg: ret.errorMsg});
+			}
+		});
+	}
+	function openDialog(){
+	    api.openFrame({
+	        name: 'dialog',
+	        url: 'dialog.html',
+	        bounces:false,
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+	function switchPage(){
+	    api.sendEvent({   //发送切换栏目和重新加载回复咨询页面事件
+            name: 'xzfySwitch',
+            extra: {
+                switchFlag: 'yes'
+            }
+        });	
+		api.setFrameGroupIndex({
+            name: 'xzfyGroup',
+            index: 0,
+            scroll: true
+        });
+	}
+</script>
+</html>

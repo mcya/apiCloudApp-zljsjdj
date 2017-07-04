@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>查看咨询</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css" />
+    <style>
+        html{
+    		font-size: 62.5%;
+    	}
+    	body{
+    		background-color: #f6f6f6;
+    	}
+    	#header{
+		   position: fixed;
+		   top: 0;
+    	   height: 36px;
+    	   line-height: 36px;
+    	   width: 100%;
+    	   background-color: #eeeeee;
+    	}
+    	#header .center{
+    	   width: 100px;
+    	   height: 36px;
+    	   margin: 0 auto;
+           text-align: center;
+    	}
+        #main{
+    	   background-color: #ffffff;
+        }
+        #main li.row{
+           border-bottom: 1px solid #e1dbdb;
+           padding: 1.4rem 0.6rem 1.4rem 1rem;    
+           word-break: break-all;
+        }
+        #main .content{
+           background-image: url(../../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+           padding-right: 2.4rem;
+        }
+        #main .userInfo{
+           margin-top: 10px;
+        }
+        #main .userInfo li:nth-child(3){
+		   color: #b7b7b7;
+        }
+		.hide{
+		    display: none;
+		}
+    </style>
+</head>
+<body>
+    <div id="header">
+         <div class="choose"></div>
+         <div class="center">回复咨询</div> 
+	</div>
+	<div style="height: 36px;"></div>
+	<div id="main">
+        <ul id="rowBox">
+		    <!-- <li class="row" onclick="openReadFrame(this)">
+			    <div class="content">
+                    <div>+value.title+</div>
+				    <ul class="userInfo flex-wrap">
+                        <li class="hide dealnum">+value.dealnum</li>				
+                        <li class="flex-con">+value.create_date+'</li>
+                        <li class="flex-con">+status+</li>
+					</ul>
+				</div>
+			</li> -->	
+	    </ul>
+	</div> 
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript">
+
+	apiready = function(){
+	    loadAjax();
+	    api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#E5E5E5',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function(ret, err){
+			loadAjax();
+		}); 
+		api.addEventListener({
+			name:'xzfySwitch'
+		},function(ret,err){
+		    loadAjax();
+		});
+	};
+	
+    function loadAjax(){
+	    var params={
+		    values: null
+		}
+		util.post('xzfy/consult/search',params,function(ret){   
+			if(!ret.respCode&&ret.respData){
+			    var data = ret.respData;
+			    var dataLength = data.length;
+				var html='';
+				for(var i=0;i<dataLength;i++){
+				    var status='';
+			        if(data[i].status=='0'){
+			            status="未处理";
+			        }else{
+			            status="已处理";
+			        }
+				    html+='<li class="row" onclick="openReadFrame(this)"><div class="content">';
+                    html+='<div>'+data[i].title+'</div>';
+			    	html+='<ul class="userInfo flex-wrap">';
+                    html+='<li class="hide dealnum">'+data[i].dealnum+'</li>';				
+                    html+='<li class="flex-con">'+data[i].create_date+'</li>';
+                    html+='<li class="flex-con">'+status+'</li></ul></div></li>';	
+				}
+			    document.getElementById('rowBox').innerHTML=html;
+			}else{
+			    api.toast({msg: ret.errorMsg});
+			}
+		});
+	}
+	function openReadFrame(tag){
+	    var dealnum=tag.getElementsByClassName('dealnum')[0].innerHTML;	
+	    api.openWin({
+	        name: 'xzfyReadFrame',
+	        url: 'xzfyReadFrame.html',
+			pageParam: {
+                dealnum: dealnum			 
+            },
+	        animation:{type:"none"}
+        });
+	}
+	    
+</script>
+</html>

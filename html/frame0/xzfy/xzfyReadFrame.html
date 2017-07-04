@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我要咨询</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../css/report.css"/>
+    <style>
+    body{
+        background-color: #f6f6f6;
+    }
+	textarea,input{color:#6c6a6a}
+	#header{
+    	background-color:#0084F4;
+    }
+    #header div {
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+		color: #FFFFFF;
+		position: relative;
+		font-size: 18px;
+	}
+    #header .left{
+	   background: url(../../../image/less@3x.png) no-repeat  left center;
+	   background-size: 12px 19px;
+	   height: 100%;
+	   width: 50px;
+	   color: #fff;
+	   padding-left: 19px;
+	   font-size: 14px;
+	}
+	#header .center{
+	    width:120px;
+	    margin:0 auto;
+		text-align: center;
+		color: #FFFFFF;
+		position: relative;
+		font-size: 18px;
+	}
+	#top{
+	    background-color: #eeeeee;
+	    height: 10px;
+		width: 100%;
+		position: fixed;
+		top: 50px;
+	}
+	.btnhover{
+        background-color: #00aeef !important;
+    }
+    .backBox{
+        float: left;
+        width: 60px;
+        height: 100%;
+        padding-left: 10px;
+        z-index: 999;
+    }
+    </style>
+</head>
+<body>
+    <header id="header">
+	    <div class="backBox" tapmode="btnhover">
+	        <div class="left" onclick="goBack()">返回</div>
+	    </div>
+		<div class="center">行政复议咨询</div>
+	</header>
+	<div id="top"></div>
+    <form id="form" action="">
+        <div class="row flex-wrap ">
+            <div class="columnName">受理编号</div>
+            <input class="flex-con" name="dealnum" type="text" readonly="readonly" />
+        </div>
+		<div class="row flex-wrap ">
+            <div class="columnName" >标题</div>
+            <input class="flex-con" name="title" type="text" readonly="readonly" />
+        </div>
+        <div class="row-bg flex-wrap ">
+            <div class="columnName" >内容</div>
+            <textarea class="flex-con" name="content" readonly="readonly"></textarea>
+        </div>
+		<div class="row-bg flex-wrap ">
+            <div class="columnName" >回复内容</div>
+            <textarea class="flex-con" name="reply" readonly="readonly"></textarea>
+        </div>
+		<div class="row flex-wrap ">
+            <div class="columnName" >受理状态</div>
+            <input class="flex-con" name="status" type="text" readonly="readonly" />
+        </div>
+    </form>
+	
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	    /*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' 
+	    });*/
+		api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+        
+	    var dealnum1 = api.pageParam.dealnum; 
+		var params={
+		    values: {
+			    dealnum: dealnum1
+		    }
+		}
+		util.post('xzfy/consult/query',params,function(ret){
+			if(!ret.respCode&&ret.respData.length>0){
+			    $api.val($api.dom('input[name="dealnum"]'),ret.respData[0].dealnum);
+			    $api.val($api.dom('input[name="title"]'),ret.respData[0].title);
+			    $api.val($api.dom('textarea[name="content"]'),ret.respData[0].content);
+			    $api.val($api.dom('textarea[name="reply"]'),ret.respData[0].reply);
+			    var status='';
+			    if(ret.respData[0].status=='0'){
+			        status="未处理";
+			    }else{
+			        status="已处理";
+			    }
+			    $api.val($api.dom('input[name="status"]'),status);
+			}else if(ret.respCode){
+			    api.toast({msg: ret.errorMsg});
+			}
+		});
+	};
+	
+	function goBack(){
+	    api.openWin({
+	        name: 'xzfyMain',
+	        url: 'xzfyMain.html',
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        }); 
+		api.closeWin({});
+    }
+</script>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>双公示</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css" />
+    <style>
+    	body{
+    		font-size: 14px;
+    		background-color: #ffffff;
+    	}
+    	#content{
+         	background-color: #ffffff;
+        }
+        #content ul li{
+            border-bottom: 1px solid #e1dbdb;
+            padding: 10px 14px;    
+            word-break: break-all;
+        }
+        #content p{
+            text-align: right;
+			margin-left: -20px;
+			color: #727276;
+        }
+		.hide{
+		    display: none;
+		}
+		.marginT{
+		    margin-top: 8px;
+		} 
+        .marginT div{
+		    -webkit-box-flex: 2;
+            -webkit-flex: 2;
+            flex: 2;
+			color: #727276;
+		}		
+		    
+    </style>
+</head>
+<body>
+    <div id="content">
+	    <ul id="ulBox">
+            <!--ajax加载数据区域-->
+		   <!--  <li onclick="openDetail(this)">
+				<div class="title">'data[i].cf_cfmc'</div>
+				<div class="flex-wrap marginT">
+				    <div class="flex-con">'data[i].cf_cfmc'.cf_cfmc</div>
+				    <p class="pubDate flex-con">'data[i].cf_jdrq'</p>
+				</div>
+				<div class="detail hide">"arr"</div>
+			</li>    --> 
+	    </ul>
+	</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript">
+    
+apiready = function(){
+		/*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	        style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+	
+		var pageNumber = 1;
+		var pageSizes = 10;
+		loadAjax(pageNumber,pageSizes,true);
+		api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    modal: true
+		});
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#E5E5E5',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function(ret, err){
+			loadAjax(1,10,true);
+			pageNumber = 1; //初始化pageSizes，防止pageSizes>totalSize时，下拉刷新后无法加载更多的bug。
+		});
+		
+		api.addEventListener({
+	        name:'scrolltobottom',
+	    extra:{threshold:100}
+		}, function(ret, err){
+			pageNumber=pageNumber+1;
+			loadAjax(pageNumber,pageSizes,false); 		
+		});
+		
+	};
+	function loadAjax(pageNumber,pageSizes,pullTag){
+	    var pageParam = api.pageParam; 
+		var params={
+		    values:{
+		        pageNum: pageNumber,
+			    pageSize: pageSizes
+			}
+		};
+		if(pageParam.catalogType=="cf"){
+		    util.postPull("sgs/cf/list",params,function(ret){
+		        if(!ret.respCode&&ret.respData.length>0){
+		    	    var data = ret.respData;
+		    	    var dataLength = data.length;
+		    		var html='';
+		    		for(var i=0;i<dataLength;i++){
+		    		    var arr=[];
+		    			arr.push(data[i].cf_wsh);
+		    			arr.push(data[i].cf_cfmc);
+		    			arr.push(data[i].cf_cflb1);
+		    			arr.push(data[i].cf_cflb2);
+		    			arr.push(data[i].cf_sy);
+		    			arr.push(data[i].cf_yj);
+		    			arr.push(data[i].cf_xdr_mc);
+		    			arr.push(data[i].cf_xdr_shxym);
+		    			arr.push(data[i].cf_xdr_zdm);
+		    			arr.push(data[i].cf_xdr_gsdj);
+		    			arr.push(data[i].cf_xdr_swdj);
+		    			arr.push(data[i].cf_xdr_sfz);
+		    			arr.push(data[i].cf_fr);
+		    			arr.push(data[i].cf_jg);
+		    			arr.push(data[i].cf_jdrq);
+		    			arr.push(data[i].cf_xzjg);
+		    			arr.push(data[i].cf_zt);
+		    			arr.push(data[i].dfbm);
+		    			arr.push(data[i].bz);
+		    			arr.push(data[i].dwbh);
+		    			html+= '<li onclick="opencfDetail(this)">';  
+                        html+= '<div class="title">'+data[i].cf_cfmc+'</div>';
+						html+= '<div class="flex-wrap marginT"><div class="flex-con">'+data[i].cf_xdr_mc+'</div>';
+		    		   	html+= '<p class="pubDate flex-con">'+data[i].cf_jdrq+'</p></div>';
+		    			html+= '<div class="detail hide">'+arr+'</div>';
+		    		   	html+= '</li>';
+		    		}
+		    		if(pullTag){
+		    		    document.getElementById("ulBox").innerHTML=html;
+		    		}else{
+		    		    $api.append($api.dom("#ulBox"),html);	
+		    		}		
+		    	}else if(!ret.respCode&&!ret.respData.length){
+		    	    api.toast({
+                        msg: '没有更多了',
+                        duration: 1000,
+                        location: 'bottom'
+                    });
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}		    
+		    });
+		}else if(pageParam.catalogType=="xk"){
+		    util.postPull("sgs/xk/list",params,function(ret){ 
+		        if(!ret.respCode&&ret.respData.length>0){
+		    	    var data = ret.respData;
+		    	    var dataLength = data.length;
+		    		var html='';
+		    		for(var i=0;i<dataLength;i++){
+		    		    var arr=[];
+		    			arr.push(data[i].xk_wsh);
+		    			arr.push(data[i].xk_xmmc);
+		    			arr.push(data[i].xk_splb);
+		    			arr.push(data[i].xk_nr);
+		    			arr.push(data[i].xk_xdr);
+		    			arr.push(data[i].xk_xdr_shxy);
+		    			arr.push(data[i].xk_xdr_zdm);
+		    			arr.push(data[i].xk_xdr_gsdj);
+		    			arr.push(data[i].xk_xdr_swdj);
+		    			arr.push(data[i].xk_xdr_sfz);
+		    			arr.push(data[i].xk_fr);
+		    			arr.push(data[i].xk_jdrq);
+		    			arr.push(data[i].xk_jzq);
+		    			arr.push(data[i].xk_xzjg);
+		    			arr.push(data[i].xk_zt);
+		    			arr.push(data[i].dfbm);
+		    			arr.push(data[i].bz);
+		    			arr.push(data[i].dwbh);
+		    			html+= '<li onclick="openxkDetail(this)">';  
+                        html+= '<div class="title">'+data[i].xk_xmmc+'</div>';
+						html+= '<div class="flex-wrap marginT"><div class="flex-con">'+data[i].xk_xdr+'</div>';
+		    		   	html+= '<p class="pubDate flex-con">'+data[i].xk_jdrq+'</p></div>';
+		    			html+= '<div class="detail hide">'+arr+'</div>';
+		    		   	html+= '</li>';
+		    		}
+		    		if(pullTag){
+		    		    document.getElementById("ulBox").innerHTML=html;
+		    		}else{
+		    		    $api.append($api.dom("#ulBox"),html);	
+		    		}		
+		    	}else if(!ret.respCode&&!ret.respData.length){
+		    	    api.toast({
+                        msg: '没有更多了',
+                        duration: 1000,
+                        location: 'bottom'
+                    });
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}		    
+		    });
+		}
+		
+	}
+	
+	function openxkDetail(tag){
+	    var params=tag.getElementsByClassName('detail')[0].innerHTML;
+		var paramArr=params.split(",");
+        api.openWin({
+	        name: 'sgsZLxkDetail',
+	        url: 'sgsZLxkDetail.html',
+			pageParam: {
+                 paramArr: paramArr			 
+            },
+	        animation:{type:"none"}
+        });
+    }
+	function opencfDetail(tag){
+	    var params=tag.getElementsByClassName('detail')[0].innerHTML;
+		var paramArr=params.split(",");
+        api.openWin({
+	        name: 'sgsZLcfDetail',
+	        url: 'sgsZLcfDetail.html',
+			pageParam: {
+                 paramArr: paramArr			 
+            },
+	        animation:{type:"none"}
+        });
+    }
+	
+</script>
+</html>

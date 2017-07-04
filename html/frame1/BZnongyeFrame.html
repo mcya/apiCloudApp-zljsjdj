@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>市地方技术规范查询</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+    	html{
+    		font-size: 62.5%;
+    	}
+    	body{
+    		background-color: #f6f6f6;
+    	}
+    	#header{
+    	    background-color:#0084F4;
+			position: fixed;
+			top: 0;
+			width: 100%;
+    	}
+    	#header div {
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				color: #FFFFFF;
+				position: relative;
+				font-size: 18px;
+	    }
+    	#header .left{
+		   background: url(../../image/less@3x.png) no-repeat  left center;
+		   background-size: 12px 19px;
+		   height: 100%;
+		   width: 50px;
+		   color: #fff;
+		   padding-left: 19px;
+		   font-size: 14px;
+		}
+		#header .center{
+		    width: 160px;
+		    margin:0 auto;
+			text-align: center;
+			color: #FFFFFF;
+			position: relative;
+			font-size: 18px;
+			overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+		}
+		#header .right{
+		    float: right;
+		    margin-right: 10px;
+		    background: url(../../image/sxi@3x.png) no-repeat  right center;
+		    background-size: 18px 18px;
+		    width: 50px;
+		}
+		#main{
+    	   background-color: #ffffff;
+        }
+        #main .row{
+           border-bottom: 1px solid #e1dbdb;
+           padding: 10px 10px 10px 12px;    
+           word-break: break-all;
+        }
+        #main .content{
+           background-image: url(../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+           padding-right: 24px;
+        }
+        #main .info{
+           margin-top: 10px;
+           color: #6a6767;
+        }
+		#container{
+    	    height: 100%;
+    	    width: 100%;
+    	    opacity: .4;
+    	    background: #000000;
+    	}
+    	#content{
+    	   width: 100%;
+    	   position: absolute;
+    	   top: 0;
+    	   background-color: #ffffff;
+    	   padding-bottom: 10px;
+    	   border-bottom: 1px solid #7e7c7c;
+    	}
+        #dialog{
+           display: none;
+           position: fixed;
+		   top: 0;
+           width: 100%;
+           height: 100%;
+           background-color: transparent;
+        }
+        #dialog input[type="text"]{
+           width: 280px;
+           padding-left: 15px;
+        }
+        #dialog input[type="date"]{
+           width: 110%;
+           padding-top: 5px;
+        }
+        #dialog .row-time{
+           padding: 10px;
+           height: 55px;
+		   width: 100%;
+           line-height: 30px;
+		   border-bottom: 1px solid #e1dbdb;
+        }
+        input::-webkit-datetime-edit-fields-wrapper{
+           background-color: transparent;
+        }
+       .bgImg{
+           float: left;
+           background-image: url(../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+           margin-left: 12px;
+           height: 100%;
+        }
+        select{
+            background-color: transparent !important;
+            border: none;
+	     	width: 120%;
+        }
+        .select{
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        #dialog .row input{
+           display:block;
+	       outline: none;
+           width: 100%;
+           height: 50px;
+           padding: 0 1em;
+           transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+		.center{
+    	   text-align: center;
+    	}
+		a{
+		   overflow: hidden;
+		}
+        .btnhover{
+           background-color: #00aeef !important;
+        }
+        .backBox{
+           float: left;
+           width: 60px;
+           height: 100%;
+           padding-left: 10px;
+        }
+        .hide{
+		   display: none;
+		}		
+    </style>
+</head>
+<body>
+	<div id="dialog">
+	    <div id="container" onclick="toggle()"></div>
+	    <div id="content">
+		    <div class="row-time flex-wrap">
+		         <span>标准编号</span>
+		         <a class="flex-con"><input type="text" name="publishStdNo" placeholder="请输入标准编号" /></a>
+	        </div>
+	        <div class="row-time flex-wrap">
+		         <span>标准名称</span>
+		         <a class="flex-con"><input type="text" name="publishName" placeholder="请输入标准名称" /></a>
+	        </div>
+	        <div class="flex-wrap" style="padding-top:10px;">
+	            <div class="flex-con center">
+				    <span class="quxiao" onclick="toggle()">取消</span> 
+	            </div>
+	            <div class="flex-con center">
+				    <span class="queding" onclick="search()">确定</span> 
+	            </div>
+	        </div>
+	   </div>      
+	</div>
+	<div id="main">
+        <ul id="ajaxBox">
+            <!-- <li class="row">
+                <div class="content">
+                    <div>广州立白（番禺）有限公司</div>
+                    <div class="info">配热电阻用温度仪表检定装置</div>
+					<ul class="info flex-wrap">   
+                        <li class="flex-con">2011-08-01</li>
+                        <li class="flex-con">2015-07-31</li>
+						<li class="flex-con"></li>
+                    </ul>
+                </div>
+            </li> -->
+        </ul>
+		<div class="pages hide"></div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/jquery-3.0.0.min.js"></script>
+<script type="text/javascript" src="../../script/ajax.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		/*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+        api.addEventListener({
+            name: 'BZnongye'
+        }, function(ret, err) {
+		    toggle();
+        });		
+		var pageNumber = 1;
+		var pageSizes = 10;
+		var searchTag=false;       //是否查询标记
+		api.addEventListener({     //监听是否查询，查询则将searchTag赋值为true
+	        name:'searchEvent',
+	        extra:{}
+		}, function(ret, err){
+		    pageNumber = 1;
+			searchTag = true;
+		});
+		loadAjax(pageNumber,pageSizes,false);
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#E5E5E5',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function(ret, err){
+		    if(searchTag){
+			    searchAjax(1,10,false);
+			}else{
+			    loadAjax(1,10,false);
+			}
+			pageNumber = 1;    //初始化pageNumber，防止pageNumber>pages时，下拉刷新后无法加载更多的bug。
+		});
+		api.addEventListener({
+	        name:'scrolltobottom',
+	    extra:{threshold:100}
+		}, function(ret, err){
+		    var pages=document.getElementsByClassName('pages')[0].innerHTML;
+		    if(pageNumber>pages){
+			    api.toast({
+                    msg: '没有更多了',
+                    duration: 1000,
+                    location: 'bottom'
+                });
+				return false;
+			};
+			pageNumber=pageNumber+1;
+			if(searchTag){     //如果数据是通过搜索得到，调用searchAjax()函数
+			    searchAjax(pageNumber,pageSizes,true);
+			}else{             //未使用搜索，调用loadAjax()函数
+			    loadAjax(pageNumber,pageSizes,true); 
+            }                 
+		});
+	};
+	
+	function loadAjax(pageNumber,pageSizes,pullTag){
+	    var pageParam = api.pageParam;
+		var typeCode=pageParam.typeCode;
+		var params={
+		    values: {
+			    typeCode: typeCode,
+			    pageNo: pageNumber,
+				pageSize: pageSizes
+			}
+		};
+		if(pullTag){
+		    util.postPull('technologySearch/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.dataList){
+		    	    var data = ret.respData.dataList;
+		    	    var html = transformHtml(data);
+		    	    $api.append($api.dom("#ajaxBox"),html);	
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+	        });
+		}else{
+		    util.post('technologySearch/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.dataList){
+		    	    var data = ret.respData.dataList;
+		    	    var html = transformHtml(data);
+		    	    document.getElementById("ajaxBox").innerHTML=html;
+		    		document.getElementsByClassName('pages')[0].innerHTML=ret.respData.pages;
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+	        });
+		}
+	}
+	function search(){
+	    toggle();
+	    searchAjax(1,10,false);
+		api.sendEvent({
+            name: 'searchEvent'
+        });
+	}
+	function searchAjax(pageNumber,pageSizes,pullTag){
+	    var pageParam = api.pageParam;
+		var typeCode=pageParam.typeCode;
+		var publishStdNo=$api.dom('input[name="publishStdNo"]').value;
+		var publishName=$api.dom('input[name="publishName"]').value;
+	    var params={
+		    values: {
+			    typeCode: typeCode,
+			    publishStdNo: publishStdNo,
+			    publishName: publishName,
+				pageNum: pageNumber,
+				pageSize: pageSizes
+			}
+		};
+		if(pullTag){ 
+		    util.postPull('technologySearch/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.dataList){
+			        var data = ret.respData.dataList;
+			        var html = transformHtml(data);
+			    	$api.append($api.dom("#ajaxBox"),html);	
+			    }else{
+			        api.toast({msg: ret.errorMsg});
+			    }
+	       });
+		}else{
+		    util.post('technologySearch/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.dataList){
+			        var data = ret.respData.dataList;
+			        var html = transformHtml(data);
+			    	document.getElementById("ajaxBox").innerHTML=html;
+		    		document.getElementsByClassName('pages')[0].innerHTML=ret.respData.pages;	
+			    }else{
+			        api.toast({msg: ret.errorMsg});
+			    }
+	       });
+		}
+	}
+	function transformHtml(data){
+	    var dataLength = data.length;
+		var html='';
+		for(var i=0;i<dataLength;i++){
+		    var date=new Date();
+			date.setTime(data[i].publishDate); 
+			var publish_Date=getdate(date);    //日期转化为yyyy-mm-dd格式
+			date.setTime(data[i].implementDate);
+			var implement_Date=getdate(date);
+			var publishStdNo=data[i].publishStdNo;
+			var publishName=data[i].publishName;
+			var arr=[];
+			arr.push(publishStdNo);
+			arr.push(publishName);
+			arr.push(publish_Date);
+			arr.push(implement_Date);
+			html+='<li class="row" onclick="openDetail(this)"><div class="content"><div>'+publishStdNo+'</div>';
+            html+='<div class="info">'+publishName+'</div>';
+            html+='<div class="detail hide">'+arr+'</div></div></li>'; 
+		}
+		return html;
+	}
+	function getdate(date){
+	    var dd=date.getDate()<10?'0'+date.getDate():date.getDate();
+	    var mm=date.getMonth()+1<10?'0'+(date.getMonth()+1):(date.getMonth()+1);
+	    var yyyy=date.getFullYear();
+	    return yyyy+'-'+mm+'-'+dd;
+	}
+    
+    function openDetail(tag){
+	    var params=tag.getElementsByClassName('detail')[0].innerHTML;
+		var paramArr=params.split(",");
+	    api.openWin({
+	        name: 'BZnongyeDetail',
+	        url: 'BZnongyeDetail.html',
+			pageParam: {
+                publishStdNo: paramArr[0],	
+                publishName: paramArr[1],
+                publish_Date: paramArr[2],
+                implement_Date: paramArr[3]		
+            },
+	        animation:{type:"none"}
+        });
+	}
+    
+    function toggle(){
+        $('#dialog').slideToggle();
+    }
+</script>
+</html>

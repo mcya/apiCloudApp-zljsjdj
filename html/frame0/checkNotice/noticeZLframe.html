@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>抽查公告标题</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css" />
+    <style>
+    	body{
+    		font-size: 14px;
+    		background-color: #ffffff;
+    	}
+    	#content{
+         	background-color: #ffffff;
+        }
+        #content ul li{
+            border-bottom: 1px solid #e1dbdb;
+            padding: 10px 14px;    
+            word-break: break-all;
+        }
+        #content p{
+            text-align: right;
+            margin-top: 8px;
+        }
+		.hide{
+		    display: none;
+		}
+    </style>
+</head>
+<body>
+    <div id="content">
+	    <ul id="ulBox">
+            <!--ajax加载数据区域-->
+	    </ul>
+	</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript">
+    
+apiready = function(){
+		/*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	        style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+	
+		var pageNumber = 1;
+		var pageSizes = 10;
+		loadAjax(pageNumber,pageSizes);
+		api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    modal: true
+		});
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#E5E5E5',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function(ret, err){
+			loadAjax(1,10);
+			pageNumber = 1; //初始化pageSizes，防止pageSizes>totalSize时，下拉刷新后无法加载更多的bug。
+		});
+		
+		api.addEventListener({
+	    name:'scrolltobottom',
+	    extra:{threshold:100}
+		}, function(ret, err){
+		    var pages=document.getElementsByClassName('pages')[0].innerHTML;
+		    if(pageNumber>pages){
+			    api.toast({
+                    msg: '没有更多了',
+                    duration: 1000,
+                    location: 'bottom'
+                });
+				return false;
+			};
+			pageNumber=pageNumber+1;
+			loadAjax(pageNumber,pageSizes);  
+			
+		});
+		
+	};
+	
+	function loadAjax(pageNum,pageSize,pullTag){
+	    var pageParam = api.pageParam; 
+		util.get('archive/list/'+pageParam.id+'/'+pageNum+'/'+pageSize,function(ret){
+		    if(!ret.respCode&&ret.respData.dataList){
+			    var data = ret.respData.dataList;
+			    var dataLength = data.length;
+				var pages=ret.respData.pages;
+				var html='';
+				for(var i=0;i<dataLength;i++){
+				    var switchDate=new Date(data[i].publishDate);
+				    var pubDate=switchDate.getFullYear();
+				    pubDate+='-'+(switchDate.getMonth()+1>9?'':'0')+(switchDate.getMonth()+1);
+				    pubDate+='-'+(switchDate.getDate()>9?'':'0')+switchDate.getDate();
+					html+= '<li onclick="openArchive(this)">';
+                    html+= '<div class="title">'+data[i].title+'</div>';
+				   	html+= '<p class="pubDate">'+pubDate+'</p>';
+				   	html+= '<div class="pages hide">'+pages+'</div>';
+					html+= '<div class="contenter hide">'+data[i].content+'</div>';
+				   	html+= '</li>';
+				}
+				if(pullTag){
+				    document.getElementById("ulBox").innerHTML=html;
+				}else{
+				    $api.append($api.dom("#ulBox"),html);	
+				}		
+			}else{
+			    api.toast({msg: ret.errorMsg});
+			}		    
+		});
+		
+	}
+	
+	function openArchive(tag){
+	    var contentTitle=tag.getElementsByClassName('title')[0].innerHTML;
+		var content=tag.getElementsByClassName('contenter')[0].innerHTML;
+		var period=tag.getElementsByClassName('pubDate')[0].innerHTML;
+        api.openWin({
+	        name: 'noticeZLpublic',
+	        url: 'noticeZLpublic.html',
+			pageParam: {
+                 title: contentTitle,
+                 content: content,
+                 period: period				 
+            },
+	        animation:{type:"none"}
+        });
+    }
+	
+</script>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>检查更新</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui-iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui-flex.css"/>
+    <style>
+    	html{
+    		font-size: 65%;
+    	}
+    	body{
+    		font-size: 1.4rem;
+    		background-color: #fff;
+    	}
+    	header {
+				background-color: #0084f4;
+		}
+		header div {
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				color: #FFFFFF;
+				position: relative;
+				font-size: 18px;
+		}
+    	#header .left{
+		   background: url(../image/less@3x.png) no-repeat  left center;
+		   background-size: 12px 19px;
+		   height: 100%;
+		   width: 50px;
+		   color: #fff;
+		   padding-left: 19px;
+		   font-size: 14px;
+		}
+		#header .center{
+		    width: 100px;
+		    margin: 0 auto;
+			text-align: center;
+			color: #FFFFFF;
+			position: relative;
+			font-size: 18px;
+		}
+		#main{
+		    text-align: center;
+		    margin-top: 80px;
+		}
+		#main .marginT{
+		    margin-top: 10px;
+            font-size: 14px;		   
+		}
+		#main .btn-update{
+		    margin-top: 80px;
+		}
+		.btnhover{
+            background-color: #00aeef !important;
+        }
+        .backBox{
+            float: left;
+            width: 60px;
+            height: 100%;
+            padding-left: 10px;
+            z-index: 999;
+        }
+        .submit {
+		    display: none;
+            width: 86%;
+            height: 45px;
+            line-height: 45px;
+            font-size: 20px;
+            color: #ffffff;
+            text-align: center;
+            margin: 0 auto;
+            position: relative;
+            background-color: #0689ef;
+            border-radius: 4px;
+        }
+		.submitBack{
+		    display: block;
+		}
+        .submit input {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }		
+    </style>
+</head>
+<body>
+	<div id="wrap" class="flex-wrap flex-vertical">
+	    <header id="header">
+	        <div class="backBox" tapmode="btnhover">
+	            <div class="left" onclick="goBack()">返回</div>
+	        </div>
+			<div class="center">检查更新</div>
+		</header>
+		<div id="main" class="flex-con">
+		    <div class="img">
+		        <img src="../image/150.png" style="width:30%" />
+		        <p class="marginT" id="appVersion">当前版本：V</p>
+		        <h3 class="marginT" id="nowVersion">当前已经是最新版本</h3>
+		    </div>
+		    <div class="btn-update">
+				<div class="submit" id="newVersion">立即升级
+                    <input type="button" />
+                </div>
+				<div class="submit submitBack" id="latestVersion">返回
+                    <input type="button" onclick="goBack()" />
+                </div>
+		    </div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/util.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	    /*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);*/
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });
+		$api.html($api.byId('appVersion'), "当前版本：V"+api.appVersion);
+		//手动更新模块函数
+		checkUpdate();
+	}
+	
+	//手动更新模块
+	 function checkUpdate() {
+            var mam = api.require('mam');
+            mam.checkUpdate(function(ret, err) {
+                if (ret.status == true) {
+                    var result = ret.result;
+                    if (result.update == true & result.closed == false) {
+                    	$api.html($api.byId('nowVersion'),'您有新版本V'+result.version+'等待更新');
+						$api.css($api.byId('latestVersion'),'display:none');
+                    	$api.css($api.byId('newVersion'),'display:block');
+                    	$api.addEvt($api.dom('#newVersion input'), 'click', function(){
+							if (api.systemType == "android") {
+                                    api.download({
+                                        url : result.source,
+                                        report : true
+                                    }, function(ret, err) {
+                                        if (ret && 0 == ret.state) {/* 下载进度 */
+                                            api.toast({
+                                                msg : "正在下载应用" + ret.percent + "%",
+                                                duration : 2000
+                                            });
+                                        }
+                                        if (ret && 1 == ret.state) {/* 下载完成 */
+                                            var savePath = ret.savePath;
+                                            api.installApp({
+                                                appUri : savePath
+                                            });
+                                        }
+                                    });
+                                }
+                                if (api.systemType == "ios") {
+                                    api.installApp({
+                                        appUri : result.source
+                                    });
+                                }
+							});
+                    } else {
+                        $api.html($api.byId('nowVersion'),'当前已经是最新版本');
+                    	$api.css($api.byId('newVersion'),'display:none');
+                    	$api.css($api.byId('latestVersion'),'display:block');
+                    }
+                } else {
+                    api.toast({ msg : err.msg });
+                }
+            });
+        }
+	function goBack(){
+		api.closeWin({
+	        name: 'checkUpdate',
+            animation:{type:"none"}
+        });
+    }
+</script>
+</html>

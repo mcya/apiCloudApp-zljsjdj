@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>意见建议采纳查询</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../css/report.css"/>
+    <style>
+	
+    </style>
+</head>
+<body>
+    <div id="topBanner"></div>
+    <div style="height:10px;width:100%;"></div>
+    <form id="form" action="">
+        <div class="row flex-wrap ">
+            <div class="columnName" >受理号码</div>
+            <input class="flex-con" name="acceptNum" type="text" placeholder="请输入受理号码"/>
+        </div>
+        <div class="submit">提交
+            <input type="button" onclick="search()" />
+        </div>
+    </form>
+	<div class="detail hide"></div>	
+    <div id="footer"></div>	
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function search(){
+	    var acceptNum=$api.dom('input[name="acceptNum"]');
+		if(acceptNum.value==''){
+		   api.toast({msg: '请输入受理号码'});
+		   return false;
+		}
+		var params={
+		    values:{
+			    acceptNum: acceptNum.value
+			}
+		};
+	    util.post('suggestion/list',params,function(ret){
+		    if(!ret.respCode&&ret.respData){
+                var data = ret.respData;
+				alert(JSON.stringify(data));
+				var date=new Date();
+				date.setTime(data.publishDate); 
+				var publish_date=getdate(date);
+				var reply_date='';
+				if(data.replyDate){               //判断回复日期是否为空，为空返回'';
+				    date.setTime(data.replyDate);
+				    reply_date=getdate(date);
+				}   				
+				var arr=[];
+				arr.push(data.name);
+				arr.push(data.unit);
+				arr.push(data.phone);
+				arr.push(data.email);
+				arr.push(data.address);
+				arr.push(publish_date);
+				arr.push(data.subject);
+				arr.push(data.content);
+				arr.push(data.reply);
+				arr.push(reply_date);
+			    document.getElementsByClassName('detail')[0].innerHTML=arr;
+				openDetail();
+			}else if(!ret.respCode&&!ret.respData){
+			    $api.val($api.dom('input[name="acceptNum"]'),'');
+			    api.toast({msg: '找不到受理号码信息'});
+			}else{
+		        api.toast({msg: ret.errorMsg});
+		    }
+		});		
+	}
+	
+	function openDetail(){
+	    var params=document.getElementsByClassName('detail')[0].innerHTML;
+		var paramArr=params.split(",");
+	    api.openWin({
+	        name: 'suggestSearchFrame',
+	        url: 'suggestSearchFrame.html',
+			pageParam: {
+                name: paramArr[0],
+                unit: paramArr[1],
+                phone: paramArr[2],
+                email: paramArr[3],
+                address: paramArr[4],	
+                publish_date: paramArr[5],
+                subject: paramArr[6],
+                content: paramArr[7],
+                reply: paramArr[8],
+				reply_date: paramArr[9]				
+            },
+	        animation:{type:"none"}
+        });
+	}
+	function getdate(date){
+	    var dd=date.getDate()<10?'0'+date.getDate():date.getDate();
+	    var mm=date.getMonth()+1<10?'0'+(date.getMonth()+1):date.getMonth()+1;
+	    var yyyy=date.getFullYear();
+	    return yyyy+'-'+mm+'-'+dd;
+	}
+</script>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>信息提示</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+    <style>
+    	html{
+    		height:100%;
+    		font-size:62.5%;
+    		background: rgba(0, 0, 0, 0.1);
+    	}
+    	body{
+    		height:100%;
+    		font-size:15px;
+    		background: rgba(0, 0, 0, 0.1);
+    	}
+		#actionSheet{
+		    width: 70%;
+			padding-top: 20px;
+			color: #ae3333;
+			text-align:center;
+			position:fixed;
+			top:50%;
+			left: 15%;
+			z-index:200;
+			background-color: #fff;
+			border-radius:12px;
+		}
+		.blueColor{
+            width: 90%;
+		    height: 45px;
+		    line-height: 45px; 
+		    font-size: 18px;
+		    color: #ffffff;
+		    text-align: center;
+		    margin: 15px auto;
+		    position: relative;
+		    background-color:#0689ef;  
+		    border-radius:4px;
+        }
+		.identifier{
+		    margin-top: 5px;
+		}
+		.button{
+		    margin-top: 10px;
+			padding: 5px 0;
+			border-top: 2px solid #0A9DCD;
+			border-bottom-left-radius: 8px;
+			border-bottom-right-radius: 8px;
+            color: #000;			
+		}
+		.button:active{
+            background-color: #ced0d1;		
+		}
+    </style>
+</head>
+<body>
+<div style="width:100%;height:100%;" onclick="cancel()"></div>
+<div id="actionSheet">
+    <div>提交成功！您的信件号码：</div>
+	<div class="identifier">20160922105138375182</div>
+	<div class="button">确定</div>
+</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript">
+
+    function getphoto(){
+        api.getPicture({
+            sourceType: 'camera',
+		    encodingType: 'jpg',
+		    mediaValue: 'pic',
+		    destinationType: 'url',
+		    allowEdit: false,
+		    quality: 50,
+    	    targetWidth: 100,
+    	    targetHeight: 100,
+		    saveToPhotoAlbum: false
+        },function(ret,err){
+		    alert(JSON.stringify(ret));
+            if(ret){
+			    api.sendEvent({
+			        name: 'getPicture',
+			        extra: {
+			            path: ret.data
+			        }
+				});
+				cancel();
+            }else{
+                cancel();
+            }
+        });
+    }
+    function cancel(){
+        api.closeFrame({});
+    }
+</script>

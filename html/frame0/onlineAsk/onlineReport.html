@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我要投信</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../css/report.css"/>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="topBanner"></div>
+	<div style="height:10px;width:100%;"></div>
+    <form id="form" action="">
+        <div class="row flex-wrap ">
+            <div class="columnName" ><span>*</span>发表人</div>
+            <input class="flex-con" name="publisher" type="text" placeholder="请输入发表人"/>
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName" ><span>*</span>联系电话</div>
+            <input class="flex-con" name="contactNum" type="text" placeholder="请输入联系电话"/>
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName" ><span>*</span>邮箱地址</div>
+            <input class="flex-con" name="email" type="text" placeholder="请输入邮箱地址"/>
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName" >联系地址</div>
+            <input class="flex-con" name="address" type="text" placeholder="请输入联系地址"/>
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName" >身份证号</div>
+            <input class="flex-con" name="idCard" type="text" placeholder="请输入身份证号"/>
+        </div>
+        <div class="row flex-wrap">
+            <div class="columnName" style="float:left"><span>*</span>咨询分类</div>
+            <div class="bgImg flex-con">
+                <div class="select">
+                   <select name="groupId">
+                      <option value="23" selected="selected">质量监督</option>
+                      <option value="24">标准监督</option>
+                      <option value="25">计量监督</option>
+                      <option value="26">特种设备</option>
+                      <option value="27">稽查执法</option>
+                      <option value="28">行风建设</option>
+                   </select>
+               </div>
+            </div>
+            
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName" ><span>*</span>主题</div>
+            <input class="flex-con" name="title" type="text" placeholder="请输入主题"/>
+        </div>
+        <div class="row-bg flex-wrap ">
+            <div class="columnName" ><span>*</span>内容</div>
+            <textarea class="flex-con" name="content" placeholder="请输入内容"></textarea>
+        </div>
+        <div class="row flex-wrap">
+            <div class="columnName" style="float:left"><span>*</span>是否公开</div>
+            <div class="bgImg flex-con">
+                <div class="select">
+                   <select name="type">
+                      <option value="0" selected="selected">公开</option>
+                      <option value="1">不公开</option>
+                   </select>
+               </div>
+            </div>  
+        </div>
+        <div class="row-yzm">
+            <div class="columnName" ><span>*</span>验证码</div>
+            <input type="text" name="verificationCode"placeholder="请输入验证码" />
+			<img id="yzmImg" />
+        </div>
+		<div id="warning"></div>
+        <div class="submit">提交
+            <input type="button" onclick="report()" />
+        </div>
+    </form>
+    <div id="footer"></div>
+	
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		document.getElementById('yzmImg').src=util.imgUrl();
+	    document.getElementById('yzmImg').onclick=function(){
+	        this.src=util.imgUrl();
+	    }
+		api.addEventListener({
+		    name: 'closeDialog'
+	    },function(ret,err){
+		    switchPage();
+		});
+	};
+	function report(){
+	    var publisher=$api.dom('input[name="publisher"]');
+		if(publisher.value==''){
+		   api.toast({msg: '请输入发表人'});
+		   return false;
+		}
+		var contactNum=$api.dom('input[name="contactNum"]');
+		if(contactNum.value==''){
+		   api.toast({msg: '请输入联系电话'});
+		   return false;
+		}
+		var email=$api.dom('input[name="email"]');
+		if(email.value==''){
+		   api.toast({msg: '请输入邮箱地址'});
+		   return false;
+		}
+		var regEmail= /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		if(!regEmail.test(email.value)){
+		    api.toast({msg: '请输入正确的邮箱地址'});
+		    return false; 
+		}
+		var address=$api.dom('input[name="address"]');
+		var idCard=$api.dom('input[name="idCard"]');
+		var groupId=$api.dom('select[name="groupId"]');
+		var title=$api.dom('input[name="title"]');
+		if(title.value==''){
+		   api.toast({msg: '请输入主题'});
+		   return false;
+		}
+		var type=$api.dom('select[name="type"]');
+		var content=$api.dom('textarea[name="content"]');
+		if(content.value==''){
+		   api.toast({msg: '请输入内容'});
+		   return false;
+		}
+		var verificationCode=$api.dom('input[name="verificationCode"]');
+		if(verificationCode.value==''){
+		   api.toast({msg: '请输入验证码'});
+		   return false;
+		}
+	    var params={
+		    values:{
+			    publisher: publisher.value,
+				contactNum: contactNum.value,
+				email: email.value,
+				address: address.value,
+				idCard: idCard.value,
+				groupId: groupId.value,	
+		        title: title.value,
+				type: type.value,
+			    content: content.value,
+			    verificationCode: verificationCode.value
+			}
+		}
+		util.post('onlineConsultant/add',params,function(ret){
+		    if(!ret.respCode){
+			    $api.val(publisher,'');
+				$api.val(contactNum,'');
+				$api.val(email,'');
+				$api.val(address,'');
+				$api.val(idCard,'');
+				$api.val(groupId,'23');
+				$api.val(title,'');
+				$api.val(type,'0');
+				$api.val(content,'');
+				$api.val(verificationCode,'');
+				document.getElementById('yzmImg').src=util.imgUrl();
+                var message=ret.errorMsg;
+				var pos=message.indexOf("：")+1;
+				var identifier=message.substring(pos);
+				openDialog(identifier);					
+			}else{
+		        api.toast({msg: ret.errorMsg});
+		    }
+		});
+	}
+	function openDialog(param){
+	    api.openFrame({
+		    pageParam: {
+                identifier: param
+            },
+	        name: 'dialog',
+	        url: 'dialog.html',
+			bounces:false,
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+	function switchPage(){
+	    api.sendEvent({   //发送切换栏目和重新加载查看信件页面事件
+            name: 'onlineSwitch'
+        });	
+		api.setFrameGroupIndex({
+            name: 'onlineGroup',
+            index: 0,
+            scroll: true
+        });
+	}
+</script>
+</html>

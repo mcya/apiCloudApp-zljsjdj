@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>智能问答</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css" />
+    <style>
+    	html{
+    		font-size: 62.5%;
+			height: inherit;
+    	}
+    	body{
+    		font-size: 14px;
+    		background-color: #f1efef;
+			height: inherit;
+    	}
+    	#header{
+    	    background-color:#0084F4;
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: 99;
+    	}
+    	#header div {
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			color: #FFFFFF;
+			position: relative;
+			font-size: 18px;
+	    }
+    	#header .left{
+		   background: url(../../../image/less@3x.png) no-repeat  left center;
+		   background-size: 20%;
+		   padding-left: 6px;
+		   font-size: 12px;
+		   height: 100%;
+		   width: 50px;
+		   color: #fff;
+		}
+		#header .center{
+		    width: 100px;
+		    margin: 0 auto;
+			text-align: center;
+			color: #FFFFFF;
+			position: relative;
+			font-size: 18px;
+		}
+		#main{
+		    background-color: #f1efef;
+		}
+		#footer{
+		    position: fixed;
+			bottom: 0;
+            height: 53px;
+            background-color: #fff; 
+            width: 100%;
+			z-index: 999;
+		}
+		.input{
+		    height: 100%;
+			margin-top: -2px;
+            border-top: 1px solid #D9D9D9; 
+            background:url(../../../image/dhk@3x.png) no-repeat center;
+            background-size: 96% 40px;    
+        }
+		.btnhover{
+            background-color: #00aeef !important;
+        }
+        .backBox{
+            float: left;
+            width: 60px;
+            height: 100%;
+            padding-left: 10px;
+            z-index: 22;
+        }
+        .odd .left{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            text-align: right;
+        }
+        .odd .right{
+            -webkit-box-flex: 6;
+            -webkit-flex: 6;
+            flex: 6;
+            padding-left: 6px;
+            position: relative;
+			background: url(../../../image/qipao1.png) no-repeat;
+			background-size: 16px 22px;
+			background-position-x: left;
+			background-position-y: 23px;
+        }
+        .odd .left img{
+            width: 40px;
+        }
+        .odd{
+           padding: 20px 0;
+        }
+        .even .left{
+            -webkit-box-flex: 6;
+            -webkit-flex: 6;
+            flex: 6;
+            text-align: right;
+            padding-right: 6px;
+            margin-top: 6px;
+            position: relative;
+            color: #ffffff;
+			background: url(../../../image/qipao2.png) no-repeat;
+			background-size: 16px 22px;
+			background-position-x: right;
+			background-position-y: 22px;
+        }
+        .even .evenContent{
+            position: relative;
+			display: inline-block;
+            top: 0;
+            right: 0;
+            min-width: 40px;
+			max-width: 82%;
+            padding: 8px;
+            z-index: 99;
+            word-break: break-all;
+            text-align: left;
+			border-radius: 8px;
+			background-color: #f49500;
+			color:black;
+        }
+		.odd .oddContent{
+		    display: inline-block;
+            min-width: 40px;
+			max-width: 82%;
+            padding: 8px 6px 8px 8px;
+            z-index: 99;
+            word-break: break-all;
+            text-align: left;
+			border-radius: 8px;
+			background-color: #fff;
+			color:black;
+        }
+        .even .right{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            
+        }
+        .even .right img{
+            width: 40px;
+        }
+        .wjx-zhezhao{
+		 	background: rgba(0, 0, 0, 0.4);
+		    text-align: center;
+		    color: #ffffff;
+		    position: fixed;
+		    z-index:100;
+		    top:0;
+		    width:100%;
+		    height: 100%;
+		}
+		.order{
+		    margin-bottom: 6px;
+			border-radius: 4px;
+		}
+		.odd .btnhover{
+            background-color: #e5e2e2 !important;
+        }
+		.datatime{
+		    padding-bottom: 8px;
+			padding-left: 4px;
+			font-size: 13px;
+			color: #000;
+		}
+		.floatbox {position: fixed; background: #f3f5f4; bottom: 0; width:100%;z-index:999;}
+		.floatbox .item {font-size: 16px; padding-left: 15px;padding-top:15px; color: #999;padding-right: 15px;background-color: #f5f5f5;}
+        .row{height: 140px;text-align: right}
+		.item textarea{height:95px;width:100%;background-color: #fff;border-radius:4px;border:1px solid #dcdcdc;padding: 10px;}
+		.item img{width:64px;height:30px;}	
+        .hide{display: none}
+    </style>
+</head>
+<body>
+
+	<header id="header">
+	   <div class="backBox" tapmode="btnhover">
+	        <div class="left" onclick="goBack()">返回</div>
+	    </div>
+		<div class="center">智能问答</div>
+	</header>
+	<div style="height:50px;width:100%"></div>
+	<div style="height:100%;width:100%;position:absolute;top:0;background-color:#f1efef;z-index:-99;"></div>
+	<div id="main" class="flex-con" style="position:relative">
+	    <div class="flex-wrap odd">
+	        <div class="left">
+	            <img src="../../../image/tx1@3x.png" />
+	        </div>
+	        <div class="right">
+			    <div class="datatime"></div>
+	            <div  class="oddContent">您好！这里是智能问答服务区。您可以在下方对话框中输入所查询的关键词，如“计量”，"质量"，并在弹出的问题列表中选择您所需要提出的问题，我来为您解答。希望我的服务对您有所帮助。</div>
+		    </div>
+	    </div>
+	</div>
+	
+	<div class="wjx-zhezhao  hide" onclick="cancel()"></div>
+	<div class="floatbox hide">
+		<div class="item">
+			<div class="row">
+			   <textarea id="content" placeholder="请输入查询关键字"></textarea>
+			  <!--  <img id="quxiao" src="../../../image/quxiao.png" /> -->
+			   <img id="fabiao" src="../../../image/fb@3x.png" />
+			</div>
+		</div>
+    </div>
+	<footer id="footer">
+        <div class="input" onclick="show()"></div>
+	</footer>
+    <div style="width:100%;height:60px;"></div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript">
+
+	apiready = function(){
+	    /*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+		api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+	    document.getElementsByClassName("datatime")[0].innerHTML="质监局("+getTime()+")";
+		$api.addEvt($api.dom('#content'),'input',function(){   //监听textarea的value变化，若value的长度大于0，切换图片
+		    if($api.trim($api.val($api.dom('#content'))).length>0){
+			    $api.attr($api.dom('#fabiao'),'src','../../../image/fb2@3x.png');
+			}else{
+			    $api.attr($api.dom('#fabiao'),'src','../../../image/fb@3x.png');
+			}
+		});
+		
+	    var parentDom=$api.dom('#main');
+		var evenId = 1;
+		var oddId = 1;
+		var scrollTopValue=10000;
+        $api.addEvt($api.dom('.item img'), 'click', function(){
+		    var val=$api.trim($api.val($api.dom('#content')));
+			if(!val){
+			     api.toast({msg:'请输入查询关键字'});
+				 return false;
+			}
+            var str='<div class="flex-wrap even"><div class="left"><div class="datatime" id="evenDatatime'+evenId+'"></div>';
+            str+='<div class="evenContent" id="evenContent'+evenId+'">'+val+'</div></div><div class="right"><img src="../../../image/tx2@3x.png" /></div></div>';
+			$api.append(parentDom,str);
+			var evenDatatimeId="evenDatatime"+evenId;
+            document.getElementById(evenDatatimeId).innerHTML="我("+getTime()+")";
+			evenId++;
+			cancel();
+			var params={
+		        values:{
+			        keyword: val
+			    }
+		    }
+			util.post('questionAnswering/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.respData.length>0){
+				    var data=ret.respData.respData;
+			        var dataLength=data.length;
+					var question='';
+					var content='';
+					var html='';
+					var orderNum='';
+			        for(var i=0;i<dataLength;i++){
+					    orderNum=i+1;
+					    question=data[i].question;
+						content=data[i].content;
+                        html+='<div class="order" tapmode="btnhover" onclick="openDetail(this)"><div>'+orderNum+'、'+question+'</div>';
+						html+='<div class="hide">'+content+'</div></div>';					
+					}
+					var str1='<div class="flex-wrap odd"><div class="left"><img src="../../../image/tx1@3x.png" /></div>';
+					str1+='<div class="right"><div class="datatime" id="oddDatatime'+oddId+'"></div><div class="oddContent" id="oddContent'+oddId+'">'+html+'</div></div></div>';
+					$api.append(parentDom,str1);
+					api.parseTapmode();
+					var oddDatatimeId="oddDatatime"+oddId;
+                    document.getElementById(oddDatatimeId).innerHTML="质监局("+getTime()+")";
+					oddId++;	
+			    }else if(!ret.respCode&&!ret.respData.respData.length){
+				    var html='抱歉，暂时没有相关的资料，请输入新的关键字。'; 
+					var str1='<div class="flex-wrap odd"><div class="left"><img src="../../../image/tx1@3x.png" /></div>';
+					str1+='<div class="right"><div class="datatime" id="oddDatatime'+oddId+'"></div><div class="oddContent" id="oddContent'+oddId+'">'+html+'</div></div></div>';
+					$api.append(parentDom,str1);
+					var oddDatatimeId="oddDatatime"+oddId;
+                    document.getElementById(oddDatatimeId).innerHTML="质监局("+getTime()+")";
+					oddId++;
+				}else{
+		            api.toast({msg: ret.errorMsg});
+		        }
+		    });
+			document.body.scrollTop=scrollTopValue; //发表后设置窗口滚动到底部
+			scrollTopValue+=10000;
+			api.pageDown(function(ret, err) {
+                if (!ret.scrolled) {
+                   //已经滚动到底部
+                }
+            });
+        });	
+	}
+	function SetOddBackground(oddContentId){
+	    var oddHeight=$api.offset($api.dom(oddContentId)).h; 
+	    var oddWidth=$api.offset($api.dom(oddContentId)).w;   
+	    var area=oddHeight*oddWidth;                           
+	    var oddBackHeight=Math.sqrt(area*149/248);             
+	    var oddBackWidth=oddBackHeight*248/149;               
+        $api.css($api.dom(oddContentId),'height:'+oddBackHeight+'px');
+	    $api.css($api.dom(oddContentId),'width:'+oddBackWidth+'px');
+	    $api.css($api.dom(oddContentId),'background-size:'+oddBackWidth+'px'+' '+oddBackHeight+'px');
+	}
+	
+	function openDetail(tag){
+		var randomId=Math.random().toString();
+	    var randomId=randomId.replace(/\W/g,"");
+		var content=tag.getElementsByClassName("hide")[0].innerHTML;
+		var html=content;
+	    var str1='<div class="flex-wrap odd"><div class="left"><img src="../../../image/tx1@3x.png" /></div>';
+	    str1+='<div class="right"><div class="datatime" id="oddDatatime'+randomId+'"></div><div class="oddContent" id="oddContent'+randomId+'">'+html+'</div></div></div>';
+	    $api.append($api.dom('#main'),str1);
+	    var oddDatatimeId="oddDatatime"+randomId;
+        document.getElementById(oddDatatimeId).innerHTML="质监局("+getTime()+")";
+		document.body.scrollTop=100000; 
+	}
+	
+    function getTime(){
+	    var time = new Date();
+		var year = time.getFullYear();
+		var month = time.getMonth()+1;
+		month=month<10?"0"+month:month;
+		var day = time.getDate();
+		day=day<10?"0"+day:day;
+	    var hours = time.getHours();
+	    var Minutes = time.getMinutes();
+		Minutes=Minutes<10?"0"+Minutes:Minutes;
+	    var Seconds = time.getSeconds();
+		Seconds=Seconds<10?"0"+Seconds:Seconds;
+	    /*var mark = "";
+	    if(hours<13){
+	        mark="上午";
+	    }else{
+	        mark="下午";
+	    	hours-=12;
+	    }*/
+	    var datatime=year+"-"+month+"-"+day+" "+hours+":"+Minutes+":"+Seconds;
+		return datatime;
+	}
+	
+    function show(){
+            $api.css($api.byId("footer"), "display:none");
+            $api.css($api.dom(".floatbox"), "display:block");
+			$api.css($api.dom(".wjx-zhezhao"), "display:block");
+			$api.attr($api.dom('#fabiao'),'src','../../../image/fb@3x.png');
+			$api.byId('content').focus();
+    }
+    function cancel(){
+			$api.val($api.byId('content'), '');
+			$api.css($api.dom(".floatbox"), "display:none");
+			$api.css($api.dom(".wjx-zhezhao"), "display:none");
+			setTimeout(function(){
+				$api.css($api.byId("footer"), "display:block")
+			}, 400);      
+    }
+	
+    function goBack(){
+		api.closeToWin({
+	        name: 'root'
+        });
+    }
+	
+    function openInput(){
+       api.openFrame({
+	       name: 'answerInput',
+	       url: 'answerInput.html',
+	       rect: {
+		       x:0,
+		       y:0,
+		       w:'auto',
+		       h:'auto'
+	       }
+       });
+    }
+    
+</script>
+</html>

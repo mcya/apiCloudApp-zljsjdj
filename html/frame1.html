@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>查询</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui-iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui-flex.css"/>
+    <style>
+    html{
+        font-size: 62.5%;
+    }
+    body{
+        background-color:#f6f6f6;
+    }
+    #search{
+    	background-color:#ffffff;
+    }
+    #search ul li{
+        border-bottom:1px solid #e1dbdb;
+        padding: 14px 10px;    
+        word-break: break-all;
+    }
+    #search p{
+        background-image:url(../image/large.png);
+        background-repeat:no-repeat;
+        background-position:right center;
+        background-size:8px 13px;
+        color:#000000;
+        padding-right: 28px;
+        font-size: 16px;
+    }
+    </style>
+</head>
+<body>
+    <div id='search'>
+        <ul>
+            <li onclick="openW('BZbeian')"><p>企标备案公告查询</p></li>
+			<li onclick="openBZnongye('3')"><p>市地方技术规范查询（农业类）</p></li>
+			<li onclick="openBZnongye('2')"><p>市地方技术规范查询（非农业类）</p></li>
+			<li onclick="openW('JLshehui')"><p>社会公用计量标准器具核准查询</p></li>
+			<li onclick="openW('JLersanji')"><p>二三级计量保证体系确认查询</p></li>
+			<li onclick="openW('JLchengdan')"><p>承担国家法定计量检定机构任务的授权查询</p></li>
+			<li onclick="openW('tezhong')"><p>特种设备信息查询</p></li>
+        </ul>
+    </div>						
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+	apiready = function(){
+		
+    }
+    function openW(type){
+	    var Url = '';
+	    switch(type){
+		    case 'BZbeian':
+			    Url = 'frame1/BZbeian.html';
+				break;
+			case 'JLshehui':
+			    Url = 'frame1/JLshehui.html';
+				break;
+			case 'JLersanji':
+			    Url = 'frame1/JLersanji.html';
+				break;
+			case 'JLchengdan':
+			    Url = 'frame1/JLchengdan.html';
+				break;
+			case 'tezhong':
+			    Url = 'frame1/tezhong.html';
+				break;
+		}
+        api.openWin({
+	        name: type,
+	        url: Url,
+            animation:{type:"none"},
+	        slidBackEnabled: false,
+	        vScrollBarEnabled: true
+        });    
+	}
+	function openBZnongye(typeCode){
+	    api.openWin({
+	        name: "BZnongye",
+	        url: "frame1/BZnongye.html",
+	        pageParam:{
+	            typeCode: typeCode
+	        },
+            animation:{type:"none"},
+	        slidBackEnabled: false,
+	        vScrollBarEnabled: true
+        });
+    }
+
+</script>
+</html>

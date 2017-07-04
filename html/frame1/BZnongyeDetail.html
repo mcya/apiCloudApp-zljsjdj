@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>市地方技术规范查询</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+    	html{
+    		font-size: 62.5%;
+    	}
+    	body{
+    		font-size: 14px;
+    		background-color: #f6f6f6;
+    	}
+    	#header{
+    	    background-color:#0084F4;
+    	}
+    	#header div {
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			color: #FFFFFF;
+			position: relative;
+			font-size: 18px;
+	    }
+    	#header .left{
+		    float: left;
+		    background: url(../../image/less@3x.png) no-repeat  left center;
+		    background-size: 12px 19px;
+		    height: 100%;
+		    width: 50px;
+		    color: #fff;
+		    padding-left: 19px;
+		    font-size: 14px;
+		 }
+		 #main{
+		    background-color: #ffffff;
+		 }
+		 #main li{
+		    border-bottom: 1px solid #e1dbdb; 
+		 }
+		 #main .flex-wrap span{
+		     word-break: break-all;
+		 }
+		 #main .flex-wrap span:nth-child(odd){
+		     -webkit-box-flex: 1;
+		     -webkit-flex: 1;
+		     flex: 1;
+		     padding: 12px 0 12px 14px;
+		     text-align: left;
+		 }
+		 #main .flex-wrap span:nth-child(even){
+		     -webkit-box-flex: 3;
+		     -webkit-flex: 3;
+		     flex: 3;
+		     padding: 12px 14px 12px 0;
+		     text-align: right;
+			 color: #4c4a4a;
+		 }
+		 .btnhover{
+             background-color: #00aeef !important;
+         }
+         .backBox{
+             width: 60px;
+             height: 100%;
+             padding-left: 10px;
+             z-index: 999;
+         }
+    </style>
+</head>
+<body>
+	<header id="header">
+	     <div class="backBox" tapmode="btnhover">
+	         <div class="left" onclick="goBack()">返回</div>
+	     </div>
+	</header>
+	<div id="main">
+	     <ul>
+	          <li class="flex-wrap">
+	              <span>标准编号</span>
+	              <span></span>
+	          </li>
+	          <li class="flex-wrap">
+	              <span>标准名称</span>
+	              <span></span>
+	          </li>
+	          <li class="flex-wrap">
+	              <span>发布日期</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>实施日期</span>
+	              <span></span>
+	          </li>
+	     </ul>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		/*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+	    api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+		var pageParam=api.pageParam;
+		var publishStdNo=pageParam.publishStdNo;
+		var publishName=pageParam.publishName;
+		var publish_Date=pageParam.publish_Date;
+		var implement_Date=pageParam.implement_Date;
+		document.getElementsByTagName('li')[0].getElementsByTagName('span')[1].innerHTML=publishStdNo;
+		document.getElementsByTagName('li')[1].getElementsByTagName('span')[1].innerHTML=publishName;
+		document.getElementsByTagName('li')[2].getElementsByTagName('span')[1].innerHTML=publish_Date;
+		document.getElementsByTagName('li')[3].getElementsByTagName('span')[1].innerHTML=implement_Date;
+		
+	};
+	function goBack(){
+	    api.openWin({
+	        name: 'BZnongye',
+	        url: 'BZnongye.html',
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        });
+		api.closeWin({});
+    }
+</script>
+</html>

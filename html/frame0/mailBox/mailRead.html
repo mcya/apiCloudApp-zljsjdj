@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>查看信件</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css" />
+    <style>
+        html{
+    		font-size: 62.5%;
+    	}
+    	body{
+    		background-color: #f6f6f6;
+    	}
+		#header{
+		   position: fixed;
+		   top: 0;
+    	   height: 36px;
+    	   line-height: 36px;
+    	   width: 100%;
+    	   background-color: #eeeeee;
+    	}
+    	#header .center{
+    	   width: 100px;
+    	   height: 36px;
+    	   margin: 0 auto;
+           text-align: center;
+    	}
+    	#header .choose{
+    	   float: right;
+    	   background: url(../../../image/lb.png) no-repeat right center;
+    	   background-size: 20px 17px;
+    	   margin-right: 1rem;
+    	   height: 100%;
+    	   width: 50px;  
+    	}
+        #main{
+    	   background-color: #ffffff;
+        }
+        #main li.row{
+           border-bottom: 1px solid #e1dbdb;
+           padding: 1.4rem 0.6rem 1.4rem 1rem;    
+           word-break: break-all;
+        }
+        #main .content{
+           background-image: url(../../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+           padding-right: 2.4rem;
+        }
+        #main .userInfo{
+           margin-top: 10px;
+        }      
+		#main .userInfo li:nth-child(1){
+		   width: 125px;
+           white-space: nowrap;
+		   overflow: hidden;
+		   text-overflow: ellipsis;
+		   padding-right: 50px;
+        }
+        #main .userInfo li:nth-child(2){
+           margin-left: -40px;
+        }
+        #main .userInfo li:nth-child(3){
+           margin-left: -8px;
+           color: #b7b7b7;
+        }
+		.select3{
+           float: right;
+           margin-right:8px;
+           height: 100%;
+           width: 100%;
+           overflow: hidden;
+        }
+        #container{
+    	    height: 100%;
+    	    width: 100%;
+    	    opacity: .4;
+    	    background: #000000;
+    	}
+    	#content{
+    	   width: 100%;
+    	   position: absolute;
+    	   top: 0;
+    	   background-color: #ffffff;
+    	   padding-bottom: 10px;
+    	   border-bottom: 1px solid #7e7c7c;
+    	}
+		#dialog{
+           display: none;
+           position: fixed;
+		   top: 36px;
+           width: 100%;
+           height: 100%;
+           background-color: transparent;
+        }
+        #dialog input[type="text"]{
+           width: 280px;
+           padding-left: 15px;
+		   padding-bottom: 3px;
+        }
+        #dialog input[type="date"]{
+           width: 110%;
+		   padding-top: 5px;
+        }
+        #dialog .row-time{
+           padding: 10px;
+           height: 55px;
+		   width: 100%;
+           line-height: 30px;
+		   border-bottom: 1px solid #e1dbdb;
+        }
+        input::-webkit-datetime-edit-fields-wrapper{
+           background-color: transparent;
+        }
+       .bgImg{
+           float: left;
+           background-image: url(../../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+		   margin-left: 15px;
+           height: 100%;
+        }
+		.center{
+		   text-align: center;
+		}
+        select{
+            background-color: transparent !important;
+            border: none;
+	     	width: 120%;
+        }
+        .select{
+            height: 100%;
+            width: 100%;	
+            overflow: hidden;
+        }
+        #dialog .row input{
+           display:block;
+	       outline: none;
+           width: 100%;
+           height: 50px;
+           padding: 0 1em;
+           transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+		a{
+		   overflow: hidden;
+		}
+		.hide{
+		   display: none;
+		}
+    </style>
+</head>
+<body>
+    <div id="header">
+         <div class="choose" onclick="toggle()"></div>
+         <div class="center">查看信件</div> 
+	</div>
+	<div style="height: 36px;"></div>
+	<!--默认隐藏dialog-->
+	<div id="dialog">
+	    <div id="container" onclick="toggle()"></div>
+	    <div id="content">
+		    <div class="row-time flex-wrap">
+		         <span><span style="opacity:0">主题</span>主题</span>
+		         <input type="text" name="subject" class="flex-con" placeholder="请输入主题" /> 
+	        </div>
+			<div class="row-time flex-wrap">
+		         <span><span style="opacity:0">人</span>发表人</span>
+		         <input type="text" name="name" class="flex-con" placeholder="请输入发表人" />
+	        </div>
+			<div class="row-time flex-wrap">
+		         <span>信件号码</span> 
+		         <input type="text" name="number" id="xjhm" class="flex-con" placeholder="请输入信件号码" />
+	        </div>
+			<div class="row-time flex-wrap">
+				<span>开始时间</span> 
+				<div class="bgImg flex-con">
+                    <div class="select">
+                       <input type="date" name="starDate" placeholder="请输入开始时间"/>
+                    </div>
+                </div>
+			</div>
+			<div class="row-time flex-wrap">
+				<span>结束时间</span> 
+				<div class="bgImg flex-con">
+                    <div class="select">
+                       <input type="date" name="endDate" placeholder="请输入结束时间"/>
+                    </div>
+                </div>
+			</div>
+	        <div class="flex-wrap" style="padding-top:10px;">
+	            <div class="flex-con center">
+				    <span class="quxiao" onclick="toggle()">取消</span> 
+	            </div>
+	            <div class="flex-con center">
+				    <span class="queding" onclick="search()">确定</span> 
+	            </div>
+	        </div>
+	   </div>      
+	</div>
+	
+	<div id="main">
+        <ul id="ajaxBox">
+            <!-- <li class="row">
+                <div class="content">
+                    <div>企标备案公告查询</div>
+                    <ul class="userInfo flex-wrap">
+                        <li>戴先生戴先生喂喂喂喂喂喂喂喂喂喂</li>
+                        <li class="flex-con">2016-08-22</li>
+                        <li class="flex-con">已回复</li>
+                    </ul>
+                </div>
+            </li> -->
+        </ul>
+		<div class="pages hide"></div>
+	</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript" src="../../../script/jquery-3.0.0.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	    var xjhmDom=document.getElementById('xjhm');//自定义长按事件
+        var timer=null;
+        xjhmDom.ontouchstart=function(){
+          timer=setTimeout(clip,800);
+        };
+        xjhmDom.ontouchend=function(){
+          clearTimeout(timer);
+        };
+	    var pageNumber = 1;
+		var pageSizes = 10;
+		var searchTag=false;       //是否查询标记
+		var pageParam = api.pageParam;
+		var subject = pageParam.subject;
+		var name = pageParam.name;
+		var number = pageParam.number;
+		var starDate = pageParam.starDate;
+		var endDate = pageParam.endDate;
+		var adSearchFlag = pageParam.adSearchFlag;
+		if(adSearchFlag){         //监听是否站内检索查询，若为是则将searchTag赋值为true，同时给查询条件赋值
+		    searchTag=true;
+		    $api.val($api.dom('input[name="subject"]'), subject);
+		    $api.val($api.dom('input[name="name"]'), name);
+		    $api.val($api.dom('input[name="number"]'), number);
+		    $api.val($api.dom('input[name="starDate"]'), starDate);
+		    $api.val($api.dom('input[name="endDate"]'), endDate);
+		}
+		api.addEventListener({     //监听是否查询，查询则将searchTag赋值为true
+	        name:'searchEvent',
+	        extra:{}
+		}, function(ret, err){
+		    pageNumber = 1;
+			searchTag = true;
+		});
+		if(searchTag){
+		    searchAjax(pageNumber,pageSizes,false);
+		}else{
+		    loadAjax(pageNumber,pageSizes,false);
+		}
+		
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#E5E5E5',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function(ret, err){
+		    if(searchTag){
+			    searchAjax(1,10,false);
+			}else{
+			    loadAjax(1,10,false);
+			}
+			pageNumber = 1; //初始化pageNumber，防止pageNumber>pages时，下拉刷新后无法加载更多的bug。
+		});
+		
+		api.addEventListener({
+			name:'mailSwitch'
+		},function(ret,err){
+		    loadAjax(1,10,false);
+		});
+		
+		api.addEventListener({
+	    name:'scrolltobottom',
+	    extra:{threshold:100}
+		}, function(ret, err){
+		    var pages=document.getElementsByClassName('pages')[0].innerHTML;
+		    if(pageNumber>pages){
+			    api.toast({
+                    msg: '没有更多了',
+                    duration: 1000,
+                    location: 'bottom'
+                });
+				return false;
+			};
+			pageNumber=pageNumber+1;
+			if(searchTag){     //如果数据是通过搜索得到，调用searchAjax()函数
+			    searchAjax(pageNumber,pageSizes,true);
+			}else{             //未使用搜索，调用loadAjax()函数
+			    loadAjax(pageNumber,pageSizes,true); 
+            }
+			
+		});
+		
+	};
+	function loadAjax(pageNum,pageSize,pullTag){ 
+	    var params={
+		    values: {
+			    pageNum: pageNum,
+				pageSize: pageSize
+			}
+		};
+		if(pullTag){ 
+	        util.postPull('mailbox/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.dataList){
+		    	    var data = ret.respData.dataList;
+		    	    var html=transformHtml(data);			
+		    		$api.append($api.dom("#ajaxBox"),html);		    		
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}else{
+		    util.post('mailbox/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.dataList){
+		    	    var data = ret.respData.dataList;
+		    	    var html=transformHtml(data);
+                    document.getElementsByClassName('pages')[0].innerHTML=ret.respData.pages;				
+					document.getElementById("ajaxBox").innerHTML=html;
+		    		
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}
+	}
+	function search(){
+	    toggle();
+		searchAjax(1,10,false);
+		api.sendEvent({
+            name: 'searchEvent',
+            extra: {
+            }
+        });
+	}
+	function searchAjax(pageNum,pageSize,pullTag){
+	    var subject=$api.dom('input[name="subject"]').value;
+	    var name=$api.dom('input[name="name"]').value;
+		var number=$api.dom('input[name="number"]').value;
+		var starDate=$api.dom('input[name="starDate"]').value;
+		var endDate=$api.dom('input[name="endDate"]').value;
+	    var params={
+		    values: {
+			    subject: subject,
+			    name: name,
+				number: number,
+			    starDate: starDate,
+				endDate: endDate,
+				pageNum: pageNum,
+				pageSize: pageSize
+			}
+		};
+		if(pullTag){ 
+	        util.postPull('mailbox/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.dataList){    
+		    	    var data = ret.respData.dataList;    
+		    	    var html=transformHtml(data);
+					$api.append($api.dom("#ajaxBox"),html);
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}else{
+		    util.post('mailbox/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.dataList){    
+		    	    var data = ret.respData.dataList;    
+		    	    var html=transformHtml(data);
+		    		document.getElementById("ajaxBox").innerHTML=html;
+		    		document.getElementsByClassName('pages')[0].innerHTML=ret.respData.pages;
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}
+	}
+	function transformHtml(data){
+		var dataLength = data.length;
+		var html='';
+		for(var i=0;i<dataLength;i++){
+		    var date=new Date();
+			date.setTime(data[i].sendDate); 
+			var send_Date=getdate(date); 
+			var reply_Date='';
+			if(data[i].replyDate){             //判断回复日期是否为空，为空返回'';
+			    date.setTime(data[i].replyDate);
+			    reply_Date=getdate(date);
+			}
+			var subject=data[i].subject; 
+			var name=data[i].name;
+			var status="";
+		    if(data[i].status=="0"){
+			    status="未回复";
+			}else{
+			    status="已回复";
+			}
+			var arr=[];
+			arr.push(data[i].name);
+			arr.push(send_Date);
+			arr.push(subject);
+			arr.push(data[i].content);
+			arr.push(data[i].reply);
+			arr.push(reply_Date);
+		    html+='<li class="row" onclick="openDetail(this)"><div class="content">';
+			html+='<div>'+subject+'</div>';
+			html+='<ul class="userInfo flex-wrap"><li>'+name+'</li>';
+			html+='<li class="flex-con">'+send_Date+'</li>';
+			html+='<li class="flex-con">'+status+'</li></ul>';
+			html+='<div class="detail hide">'+arr+'</div></div></li>'
+		}
+		return html;
+	}
+	function getdate(date){
+	    var dd=date.getDate()<10?'0'+date.getDate():date.getDate();
+	    var mm=date.getMonth()+1<10?'0'+(date.getMonth()+1):date.getMonth()+1;
+	    var yyyy=date.getFullYear();
+	    return yyyy+'-'+mm+'-'+dd;
+	}
+	
+    function openDetail(tag){
+	    var params=tag.getElementsByClassName('detail')[0].innerHTML;
+		var paramArr=params.split(",");
+	    api.openWin({
+	        name: 'mailReadFrame',
+	        url: 'mailReadFrame.html',
+			pageParam: {
+                name: paramArr[0],	
+                sendDate: paramArr[1],
+                subject: paramArr[2],
+                content: paramArr[3],
+                reply: paramArr[4],	
+                replyDate: paramArr[5]	
+            },
+	        animation:{type:"none"}
+        });
+	}
+
+	function clip(){
+		var clipBoard = api.require('clipBoard');
+        clipBoard.get(function(ret, err){
+            if(ret.value!="test"){
+		        $api.val($api.dom('input[name="number"]'),ret.value);
+		    }
+        });
+	}
+    function toggle(){
+        $('#dialog').slideToggle();
+    }
+</script>
+</html>

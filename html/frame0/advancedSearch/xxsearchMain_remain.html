@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>站内检索</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../css/report.css"/>
+    <style>
+    html{
+        font-size: 62.5%;
+    } 
+    #header{
+    	background-color:#0084F4;
+		width: 100%;
+		position: fixed;
+    }
+    #header div{
+		height: 50px;
+	    line-height: 50px;
+		text-align: center;
+		color: #FFFFFF;
+		position: relative;
+		font-size: 18px;
+	}
+    #header .left{
+	    background: url(../../../image/less@3x.png) no-repeat  left center;
+		background-size: 12px 19px;
+		height: 100%;
+		width: 50px;
+		color: #fff;
+		padding-left: 19px;
+		font-size: 14px;
+	}
+	#header .center{
+		width:100px;
+		margin:0 auto;
+	    text-align: center;
+	    color: #FFFFFF;
+	    position: relative;
+		font-size: 18px;
+	}
+	input,select{
+	    color: #434343;
+	}
+	input[type="date"]{
+	    width: 110%;
+		padding: 20px 5px 0 0;
+	}
+	.select{
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+    .btnhover{
+        background-color: #00aeef !important;
+    }
+    .backBox{
+       float: left;
+       width: 60px;
+       height: 100%;
+       padding-left: 10px;
+       z-index: 999;
+    }
+	.show{
+	   display: block;
+	}
+	form{
+	   display: none;
+	}
+	.hide{
+	   display: none;
+	}
+	span{
+	   color: #000;
+	}
+	#switch{
+	    background-color: #fff;
+	    position: fixed;
+		top: 50px;
+		width: 100%;
+		text-align: center;
+		font-size: 16px;
+		font-weight: 900;
+		height: 50px;
+		line-height: 50px;
+		border-bottom: 1px solid #eeeeee;
+	}
+	#switch div{
+	    color: #5b5959;
+	}
+	#switch div.active{
+		color: #0084F4;
+		background: url(../../../image/line@2x.png) no-repeat  center bottom;
+		background-size:80%;
+	}
+    </style>
+</head>
+<body>
+    <header id="header">
+	    <div class="backBox" tapmode="btnhover">
+	       <div class="left" onclick="goBack()">返回</div>
+	    </div>
+	    <div class="center">站内检索</div>
+    </header>  
+	<div id="switch" class="flex-wrap">   
+	    <div onclick="switchGroup(this,0)" class="flex-con active">网站检索</div>
+		<div onclick="switchGroup(this,1)" class="flex-con">局长信箱</div>
+		<div onclick="switchGroup(this,2)" class="flex-con">在线咨询</div>
+		<div onclick="switchGroup(this,3)" class="flex-con">举报投诉</div>
+	</div>
+	<div id="topBanner" style="top:100px;height:10px;"></div>
+	<div style="height:110px;width:100%;"></div>
+	<!-- 网站检索 -->
+    <form id="form0" class="show">
+        <div class="row flex-wrap">
+            <div class="columnName" >关键字</div>
+            <input class="flex-con" name="keyword" type="text" placeholder="请输入关键字"/>
+        </div>
+        <div class="row flex-wrap">
+            <div class="columnName" >检索范围</div>
+            <div class="bgImg flex-con">
+                <div class="select">
+                   <select name="selectRange">
+                        <option value="title">标题检索</option>
+                        <option value="content">正文检索</option>
+                        <option value="crdate">时间检索</option>
+                   </select>
+               </div>
+            </div>  
+        </div>
+        <div class="row flex-wrap">
+            <div class="columnName" >栏目检索</div>
+            <div class="bgImg flex-con">
+                <div class="select">
+                   <select name="category">
+                        <option value="zjsd">质监速递</option>
+                        <option value="xxgk">信息公开</option>
+                        <option value="xzfy">行政复议</option>
+                        <option value="wlwz">网络问政</option>
+                        <option value="ywzt">业务直通</option>
+                        <option value="yqlj">友情链接</option>
+                   </select>
+               </div>
+            </div>  
+        </div> 
+		<div class="row flex-wrap "> 
+		     <div class="columnName" >开始时间</div> 
+			 <div class="bgImg flex-con">
+                 <div class="select">
+                    <input name="beginTime" type="date" placeholder="请输入开始时间" />
+                 </div>
+             </div> 
+        </div>
+		<div class="row flex-wrap "> 
+		     <div class="columnName" >结束时间</div> 
+			 <div class="bgImg flex-con">
+                 <div class="select">
+                    <input name="endTime" type="date" placeholder="请输入结束时间" />
+                 </div>
+             </div> 
+        </div> 
+        <div class="submit">检索
+            <input type="button" onclick="search(0)" />
+        </div>
+    </form>
+	<!-- 局长信箱 -->
+	<form id="form1">
+        <div class="row flex-wrap">
+            <div class="columnName" >主题</div>
+            <input class="flex-con" name="subject" type="text" placeholder="请输入主题"/>
+        </div>
+		<div class="row flex-wrap">  
+            <div class="columnName" >发表人</div>
+            <input class="flex-con" name="name" type="text" placeholder="请输入发表人"/>
+        </div>
+		<div class="row flex-wrap">
+            <div class="columnName" >信件号码</div>
+            <input class="flex-con" name="number" type="text" placeholder="请输入信件号码"/>
+        </div>
+		<div class="row flex-wrap "> 
+		     <div class="columnName" >开始时间</div> 
+			 <div class="bgImg flex-con">
+                 <div class="select">
+                    <input name="starDate" type="date" placeholder="请输入开始时间" />
+                 </div>
+             </div> 
+        </div>
+		<div class="row flex-wrap "> 
+		     <div class="columnName" >结束时间</div> 
+			 <div class="bgImg flex-con">
+                 <div class="select">
+                    <input name="endDate" type="date" placeholder="请输入结束时间" />
+                 </div>
+             </div> 
+        </div> 
+        <div class="submit">检索
+            <input type="button" onclick="search(1)" />
+        </div>
+    </form>
+	<!-- 在线咨询 -->
+	<form id="form2">
+	    <div class="row flex-wrap">
+            <div class="columnName" >主题</div>
+            <input class="flex-con" name="title" type="text" placeholder="请输入主题"/>
+        </div>
+        <div class="row flex-wrap">
+            <div class="columnName" >受理号码</div>
+            <input class="flex-con" name="acceptNum" type="text" placeholder="请输入受理号码"/>
+        </div>
+		<div class="row flex-wrap">
+            <div class="columnName" >咨询分类</div>
+            <div class="bgImg flex-con">
+                <div class="select">
+                   <select name="groupId">
+                        <option value="">全部</option>
+                        <option value="23">质量监督</option>
+                        <option value="24">标准监督</option>
+						<option value="25">计量监督</option>
+                        <option value="26">特种设备</option>
+						<option value="27">稽查执法</option>
+                        <option value="28">行风建设</option>
+                   </select>
+               </div>
+            </div>  
+        </div>
+		<div class="row flex-wrap "> 
+		     <div class="columnName" >开始时间</div> 
+			 <div class="bgImg flex-con">
+                 <div class="select">
+                    <input name="starDate" type="date" placeholder="请输入开始时间" />
+                 </div>
+             </div> 
+        </div>
+		<div class="row flex-wrap "> 
+		     <div class="columnName" >结束时间</div> 
+			 <div class="bgImg flex-con">
+                 <div class="select">
+                    <input name="endDate" type="date" placeholder="请输入结束时间" />
+                 </div>
+             </div> 
+        </div> 
+        <div class="submit">检索
+            <input type="button" onclick="search(2)" />
+        </div>
+    </form>
+	<!-- 举报投诉 -->
+	<form id="form3">
+	    <div class="row flex-wrap">
+            <div class="columnName" >发表人</div>
+            <input class="flex-con" name="publisher" type="text" placeholder="请输入发表人"/>
+        </div>
+        <div class="row flex-wrap"> 
+            <div class="columnName" >受理号码</div>
+            <input class="flex-con" name="acceptNum" type="text" placeholder="请输入受理号码"/>
+        </div>
+		<div class="row flex-wrap">
+            <div class="columnName" >处理状态</div>
+            <div class="bgImg flex-con">
+                <div class="select">
+                   <select name="status">
+                        <option value="">全部</option>
+                        <option value="0">未处理</option>
+                        <option value="1">已处理</option>
+                   </select>
+               </div>
+            </div>  
+        </div>
+        <div class="submit">检索
+            <input type="button" onclick="search(3)" />
+        </div>
+    </form>
+    <div id="footer"></div>						
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript">
+
+	apiready = function(){
+	    
+	    /*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);*/
+		api.setStatusBarStyle({
+            style: 'light',
+			color: '#0084f4'
+        });
+		api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+	};
+	
+	function switchGroup(tag,index) {
+		if (tag == $api.dom('#switch .active'))
+			return;
+		var switchList = $api.domAll('#switch div');
+		for (var i = 0, len = switchList.length; i < len; i++) {
+			$api.removeCls(switchList[i], 'active');
+		}
+		console.log(tag);
+		$api.addCls(switchList[index], 'active');
+		
+		var formList = $api.domAll('form');
+		for (var i = 0, len = formList.length; i < len; i++) {
+			$api.removeCls(formList[i], 'show');
+		}
+		$api.addCls(formList[index], 'show');
+	}
+	function search(type){
+	    var funcName='';
+	    switch(type){
+		    case 0 : 
+			    funcName='search0()';
+				break;
+			case 1 : 
+			    funcName='search1()';
+				break;
+            case 2 : 
+			    funcName='search2()';
+				break;
+            case 3 : 
+			    funcName='search3()';
+                break;				
+		}
+	    var timer=setTimeout(funcName,400);
+	}
+	function search0(){ 
+	    var keyword=$api.dom('input[name="keyword"]').value;
+		var selectRange=$api.dom('select[name="selectRange"]').value;
+		var category=$api.dom('select[name="category"]').value; 
+		var beginTime=$api.dom('input[name="beginTime"]').value;
+		var endTime=$api.dom('input[name="endTime"]').value;
+		var params={
+		    values:{
+			    keyword: keyword,
+				selectRange: selectRange,
+				category: category, 
+				beginTime: beginTime,
+				endTime: endTime,
+                pageNum: 1,
+                pageSize: 10				
+			} 
+		}; 
+		util.post('advanced/search',params,function(ret){
+		    if(!ret.respCode){
+			    var data = ret.respData;
+		    	var dataLength = data.length;
+				var html='';
+				for(var i=0;i<dataLength;i++){
+				    html+= '<li onclick="openDetail(this)">';  
+                    html+= '<div class="title">'+data[i].title+'</div>';
+					html+= '<div class="flex-wrap marginT"><div class="flex-con">'+data[i].content.replace(/<.*?>/ig,"").replace(/\s*/g,"")+'</div>'; 
+					html+= '<div class="flex-con hide content">'+data[i].content+'</div>';
+		    		html+= '<p class="pubDate flex-con">'+data[i].publish_date+'</p></div>'; 
+		    		html+= '</li>';
+				}
+				api.openWin({
+	                name: 'searchZL',
+	                url: 'searchZL.html',
+					pageParam: {
+                        html: html,
+						keyword: keyword,
+						selectRange: selectRange,
+						category: category,
+						beginTime: beginTime,
+						endTime: endTime
+                    },
+                    animation:{type:"none"},
+	                slidBackEnabled: false
+                });  
+			}
+        });
+	}
+	function search1(){
+	    var subject=$api.dom('#form1 input[name="subject"]').value;
+	    var name=$api.dom('#form1 input[name="name"]').value;
+		var number=$api.dom('#form1 input[name="number"]').value;
+		var starDate=$api.dom('#form1 input[name="starDate"]').value;
+		var endDate=$api.dom('#form1 input[name="endDate"]').value;
+		api.openWin({
+	        name: 'mailMain',
+	        url: '../mailBox/mailMain.html',
+			pageParam:{
+			    subject: subject,
+                name: name,
+				number: number,
+				starDate: starDate,
+				endDate: endDate,
+				adSearchFlag: true
+			},
+	        vScrollBarEnabled: false,
+	        hScrollBarEnabled: false,
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        });
+	}
+	function search2(){
+	    var acceptNum=$api.dom('#form2 input[name="acceptNum"]').value;
+	    var title=$api.dom('#form2 input[name="title"]').value;
+		var groupId=$api.dom('#form2 select[name="groupId"]').value;
+		var starDate=$api.dom('#form2 input[name="starDate"]').value;
+		var endDate=$api.dom('#form2 input[name="endDate"]').value;
+		api.openWin({
+	        name: 'onlineMain',
+	        url: '../onlineAsk/onlineMain.html',
+			pageParam:{
+			    acceptNum: acceptNum,
+                title: title,
+				groupId: groupId,
+				starDate: starDate,
+				endDate: endDate,
+				adSearchFlag: true
+			},
+	        vScrollBarEnabled: false,
+	        hScrollBarEnabled: false,
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        });
+	}
+	function search3(){
+	    var publisher=$api.dom('#form3 input[name="publisher"]').value;
+	    var acceptNum=$api.dom('#form3 input[name="acceptNum"]').value;
+		var status=$api.dom('#form3 select[name="status"]').value;
+		api.openWin({
+	        name: 'complainMain',
+	        url: '../complain/complainMain.html',
+			pageParam:{
+			    publisher: publisher,
+                acceptNum: acceptNum,
+				status: status,
+				adSearchFlag: true
+			},
+	        vScrollBarEnabled: false,
+	        hScrollBarEnabled: false,
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        });
+	}
+
+	function goBack(){
+		api.closeToWin({
+	        name: 'root'
+        });
+    }
+ 
+</script>
+</html>

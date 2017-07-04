@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>查看咨询</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css" />
+    <style>
+    	html{
+    		font-size: 62.5%;
+    	}
+    	body{
+    		background-color: #f6f6f6;
+    	}
+    	#header{
+		   position: fixed;
+		   top: 0;
+    	   height: 36px;
+    	   line-height: 36px;
+    	   width: 100%;
+    	   background-color: #eeeeee;
+    	}
+    	#header .center{
+    	   width: 100px;
+    	   height: 36px;
+    	   margin: 0 auto;
+           text-align: center;
+    	}
+    	.center{
+    	   text-align: center;
+    	}
+    	#header .choose{
+    	   float: right;
+    	   background: url(../../../image/lb.png) no-repeat right center;
+    	   background-size: 20px 17px;
+    	   margin-right: 1rem;
+    	   height: 100%;
+    	   width: 50px;  
+    	}
+        #main{
+    	   background-color: #ffffff;
+        }
+        #main .row{
+           border-bottom: 1px solid #e1dbdb;
+           padding: 10px 6px 10px 14px;    
+           word-break: break-all;
+        }
+        #main .ellipsis{
+           width: 100px;
+           overflow: hidden;
+           white-space: nowrap;
+           text-overflow: ellipsis;
+        }
+        #main .content{
+           background-image: url(../../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+           padding-right: 24px;
+        }
+        #main .userInfo{
+           margin-top: 10px;
+        }
+        #main .userInfo li:nth-child(2){
+           margin-left: -40px;
+           color: #b7b7b7;
+        }
+		.select3{
+           float: right;
+           height: 100%;
+           width: 100%;
+           overflow: hidden;
+        }
+        #container{
+    	    height: 100%;
+    	    width: 100%;
+    	    opacity: .4;
+    	    background: #000000;
+    	}
+    	#content{
+    	   width: 100%;
+    	   position: absolute;
+    	   top: 0;
+    	   background-color: #ffffff;
+    	   padding-bottom: 10px;
+    	   border-bottom: 1px solid #7e7c7c;
+    	}
+		.createDate{
+		   margin-top: 5px;
+		   color: #999999;
+		}
+        #dialog{
+           display: none;
+           position: fixed;
+		   top: 36px;
+           width: 100%;
+           height: 100%;
+           background-color: transparent;
+        }
+        #dialog input[type="text"]{
+           width: 280px;
+           padding-left: 15px;
+		   padding-bottom: 3px;
+        }
+        #dialog input[type="date"]{
+           width: 110%;
+		   padding-top: 5px;
+        }
+        #dialog .row-time{
+           padding: 10px;
+           height: 55px;
+		   width: 100%;
+           line-height: 30px;
+		   border-bottom: 1px solid #e1dbdb;
+        }
+        input::-webkit-datetime-edit-fields-wrapper{
+           background-color: transparent;
+        }
+       .bgImg{
+           float: left;
+           background-image: url(../../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+           margin-left: 15px;
+           height: 100%;
+        }
+        select{
+            background-color: transparent !important;
+            border: none;
+	     	width: 120%;
+        }
+        .select{
+            height: 100%;
+            width: 100%;	
+            overflow: hidden;
+        }
+        #dialog .row input{
+           display:block;
+	       outline: none;
+           width: 100%;
+           height: 50px;
+           padding: 0 1em;
+           transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+		a{
+		   width: 120px;
+		   overflow: hidden;
+		   border-bottom:2px solid  #747070;;
+		}
+		.hide{
+		   display: none;
+		}
+    </style>
+</head>
+<body>
+    <div id="header">
+         <div class="choose" onclick="toggle()"></div>
+         <div class="center">查看咨询</div>
+	</div>
+	<div style="height: 36px;"></div>
+	<!--默认隐藏dialog-->
+	<div id="dialog">
+	    <div id="container" onclick="toggle()"></div>
+	    <div id="content">
+		    <div class="row-time flex-wrap">
+		         <span><span style="opacity:0">主题</span>主题</span>
+		         <input type="text" name="title" class="flex-con"  placeholder="请输入主题" />
+	        </div>
+		    <div class="row-time flex-wrap">
+		         <span>受理号码</span>
+		         <input type="text" name="acceptNum" class="flex-con"  placeholder="请输入受理号码" />
+	        </div>
+	        <div class="row-time flex-wrap">
+                 <div style="float:left">咨询分类</div>
+                 <div class="bgImg flex-con">
+                     <div class="select3">
+                         <select name="groupId" id="groupId">
+                            <option value="">全部</option>
+                            <option value="23">质量监督</option>
+                            <option value="24">标准监督</option>
+                            <option value="25">计量监督</option>
+                            <option value="26">特种设备</option>
+                            <option value="27">稽查执法</option>
+                            <option value="28">行风建设</option>
+                         </select>
+                    </div>
+                </div>  
+            </div>
+			<div class="row-time flex-wrap">
+				<span>开始时间</span> 
+				<div class="bgImg flex-con">
+                    <div class="select">
+                       <input type="date" name="starDate" placeholder="请输入开始时间"/>
+                    </div>
+                </div>
+			</div>
+			<div class="row-time flex-wrap">
+				<span>结束时间</span> 
+				<div class="bgImg flex-con">
+                    <div class="select">
+                       <input type="date" name="endDate" placeholder="请输入结束时间"/>
+                    </div>
+                </div>
+			</div>
+	        <div class="flex-wrap" style="padding-top:10px;">
+	            <div class="flex-con center">
+				    <span class="quxiao" onclick="toggle()">取消</span> 
+	            </div>
+	            <div class="flex-con center">
+				    <span class="queding" onclick="search()">确定</span> 
+	            </div>
+	        </div>
+	   </div>      
+	</div>
+	
+	<div id="main">
+        <ul id="ajaxBox">
+             <!-- <li class="row">
+                <div class="content">
+                    <div class="title">万科南方公元山石裸露</div>
+                    <div class="createDate">2016-07-12</div>
+                </div>
+            </li> -->
+        </ul>
+		<div class="pages hide"></div>
+	</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript" src="../../../script/jquery-3.0.0.min.js"></script>
+<script type="text/javascript">
+
+	apiready = function(){
+	    var pageNumber = 1;
+		var pageSizes = 10;
+		var searchTag=false;       //是否查询标记
+		var pageParam = api.pageParam;
+		var acceptNum = pageParam.acceptNum;
+		var title = pageParam.title;
+		var groupId = pageParam.groupId;
+		var starDate = pageParam.starDate;
+		var endDate = pageParam.endDate;
+		var adSearchFlag = pageParam.adSearchFlag;
+		if(adSearchFlag){         //监听是否站内检索查询，若为是则将searchTag赋值为true，同时给查询条件赋值
+		    searchTag=true;
+		    $api.val($api.dom('input[name="acceptNum"]'), acceptNum);
+		    $api.val($api.dom('input[name="title"]'), title);
+			document.getElementById("groupId").value = groupId;         
+		    $api.val($api.dom('input[name="starDate"]'), starDate);
+		    $api.val($api.dom('input[name="endDate"]'), endDate);
+		}
+		api.addEventListener({     //监听是否查询，若为是则将searchTag赋值为true
+	        name:'searchEvent'
+		}, function(ret, err){
+		    pageNumber = 1;
+			searchTag = true;
+		});
+		if(searchTag){
+		    searchAjax(pageNumber,pageSizes,false);
+		}else{
+		    loadAjax(pageNumber,pageSizes,false);
+		}
+		
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#E5E5E5',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function(ret, err){
+		    if(searchTag){
+			    searchAjax(1,10,false);
+			}else{
+			    loadAjax(1,10,false);
+			}
+			pageNumber = 1;    //初始化pageNumber，防止pageNumber>pages时，下拉刷新后无法加载更多的bug。
+		});
+		
+		api.addEventListener({
+			name:'onlineSwitch'
+		},function(ret,err){
+		    loadAjax(1,10,false);
+		});
+		api.addEventListener({
+	        name:'scrolltobottom',
+	        extra:{threshold:100}
+		}, function(ret, err){
+		    var pages=document.getElementsByClassName('pages')[0].innerHTML;
+		    if(pageNumber>pages){
+			    api.toast({
+                    msg: '没有更多了',
+                    duration: 1000,
+                    location: 'bottom'
+                });
+				return false;
+			};
+			pageNumber=pageNumber+1;
+			if(searchTag){     //如果数据是通过搜索得到，调用searchAjax()函数
+			    searchAjax(pageNumber,pageSizes,true);
+			}else{             //未使用搜索，调用loadAjax()函数
+			    loadAjax(pageNumber,pageSizes,true); 
+            }			
+			
+		});
+		
+	};
+	function loadAjax(pageNum,pageSize,pullTag){   //pullTag为是否下拉标记
+	    var params={
+		    values: {
+			    pageNum: pageNum,
+				pageSize: pageSize
+			}
+		};
+		if(pullTag){     //下拉页面加载调用post
+	        util.postPull('onlineConsultant/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.dataList){
+		    	    var data = ret.respData.dataList;
+		    	    var html=transformHtml(data);			
+		    		$api.append($api.dom("#ajaxBox"),html);		    		
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}else{           //页面加载调用post
+		    util.post('onlineConsultant/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData.dataList){
+		    	    var data = ret.respData.dataList;
+		    	    var html=transformHtml(data);			
+					document.getElementById("ajaxBox").innerHTML=html;
+					document.getElementsByClassName('pages')[0].innerHTML=ret.respData.pages;
+		    		
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}
+	}
+	function search(){
+	    toggle();
+	    searchAjax(1,10,false);
+		api.sendEvent({
+            name: 'searchEvent'
+        });
+	}
+	function searchAjax(pageNum,pageSize,pullTag){
+	    var acceptNum=$api.dom('input[name="acceptNum"]').value;
+	    var title=$api.dom('input[name="title"]').value;
+		var groupId=$api.dom('select[name="groupId"]').value;
+		var starDate=$api.dom('input[name="starDate"]').value;
+		var endDate=$api.dom('input[name="endDate"]').value;
+	    var params={
+		    values: {
+			    acceptNum: acceptNum,
+			    title: title,
+				groupId: groupId,
+			    starDate: starDate,
+				endDate: endDate,
+				pageNum: pageNum,
+				pageSize: pageSize
+			}
+		};
+		if(pullTag){ 
+	        util.postPull('onlineConsultant/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData){
+		    	    var data = ret.respData.dataList;
+		    	    var html=transformHtml(data);
+		    		$api.append($api.dom("#ajaxBox"),html);	
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}else{
+		    util.post('onlineConsultant/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData){
+		    	    var data = ret.respData.dataList;
+		    	    var html=transformHtml(data);
+		    		document.getElementById("ajaxBox").innerHTML=html;
+		    		document.getElementsByClassName('pages')[0].innerHTML=ret.respData.pages;
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}
+	}
+	function transformHtml(data){
+        var dataLength = data.length;
+		var html='';
+		for(var i=0;i<dataLength;i++){
+			var date=new Date();
+			date.setTime(data[i].createDate); 
+			var create_Date=getdate(date);    //日期转化为yyyy-mm-dd格式
+			var handle_Date='';
+			if(data[i].handleDate){             //判断回复日期是否为空，为空返回'';
+			    date.setTime(data[i].handleDate);
+			    handle_Date=getdate(date);
+			}
+			var title=data[i].title; 
+			var arr=[];
+			arr.push(data[i].publisher);
+			arr.push(create_Date);
+			arr.push(data[i].groupId);
+			arr.push(data[i].content);
+			arr.push(data[i].replyContent);
+			arr.push(data[i].replier);
+			arr.push(data[i].replyPhone);
+			arr.push(handle_Date);
+			html+='<li class="row" onclick="openDetail(this)"><div class="content">';
+			html+='<div class="title">'+title+'</div>';
+			html+='<div class="createDate">'+create_Date+'</div>';
+			html+='<div class="detail hide">'+arr+'</div></div></li>'
+		}
+        return html;	    
+	}
+	function getdate(date){
+	    var dd=date.getDate()<10?'0'+date.getDate():date.getDate();
+	    var mm=date.getMonth()+1<10?'0'+(date.getMonth()+1):date.getMonth()+1;
+	    var yyyy=date.getFullYear();
+	    return yyyy+'-'+mm+'-'+dd;
+	}
+	
+    function openDetail(tag){
+	    var params=tag.getElementsByClassName('detail')[0].innerHTML;
+		var paramArr=params.split(",");
+	    api.openWin({
+	        name: 'onlineReadFrame',
+	        url: 'onlineReadFrame.html',
+			pageParam: {
+                publisher: paramArr[0],	
+                createDate: paramArr[1],
+                groupId: paramArr[2],
+                content: paramArr[3],
+                replyContent: paramArr[4],	
+                replier: paramArr[5],
+                replyPhone: paramArr[6],
+                handleDate:	paramArr[7]		
+            },
+	        animation:{type:"none"}
+        });
+	}
+	
+    function toggle(){
+        $('#dialog').slideToggle();
+		document.body.scrollTop=0;
+    }
+</script>
+</html>

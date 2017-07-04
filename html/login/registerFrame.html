@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <style>
+	    html,body{
+		    width: 100%;
+			height: 100%;
+		}
+		*{
+		    box-sizing:content-box;
+		}
+    	#form{
+            background-color: #ffffff;
+        }
+        .row{
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            border-bottom: 1px solid #e1dbdb;
+        }
+        .columnName{ 
+            width: 78px;
+            text-align: right;
+        }
+        .row input{
+            display:block;
+            height: 60px;
+            padding: 0 5px 0 14px;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+        /*
+         .row input:focus{
+            border-color: #66afe9;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+        }
+        */
+        textarea{
+            width: 100%;
+            height: 80px;
+            padding: .8em 1em;
+        }
+        .row-bg{
+            height: 100px;
+            line-height: 100px;
+            border-bottom: 1px solid #e1dbdb;
+        }
+        .row-yzm{
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            border-bottom: 1px solid #e1dbdb;
+        }
+        .row-yzm input{
+            width: 120px;
+            height: 60px;
+            padding: 0 10px !important;
+        }
+        .row-yzm img{
+            height: 30px;
+	    	vertical-align: middle;
+        }
+		.submit{
+            width: 94%;
+		    height: 45px;
+		    line-height: 45px; 
+		    font-size: 18px;
+		    color: #ffffff;
+		    text-align: center;
+		    margin: 20px auto;
+		    position: relative;
+		    background-color:#0689ef;
+		    border-radius:4px;
+        }
+        .submit input{
+            position: absolute;
+		    height: 100%;
+		    width: 100%;
+		    top: 0;
+		    left: 0;
+		    opacity: 0;
+        }
+		select{
+            background-color: transparent !important;
+            border: none;
+	     	width: 120%;
+        }
+        .select{
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+		.row input[type="date"]{
+		    vertical-align: middle;
+			background-color: transparent !important;
+            border: none;
+	     	width: 110%;
+			padding: 20px 5px 0 0;
+		}
+        .bgImg{
+            float: left;
+            background-image: url(../../image/large.png);
+            background-repeat: no-repeat;
+            background-position: right center;
+            background-size: 8px 13px;
+            margin-right: 14px;
+            margin-left: 12px;
+            height: 100%;
+	     	width: 100%;
+        }
+		#checkCode {
+            width: 70px;
+		    height: 34px;
+		    line-height: 34px;
+            font-family: Arial;
+            font-style: italic;
+            color: Red;
+            border: 1px solid #0d0d0d;
+            padding: 2px 3px;
+            letter-spacing: 6px;
+            font-weight: bolder;
+        }
+		.row .twoRow{
+		    line-height: 30px;
+			text-align: right;
+			padding-left: 0;
+		}
+ 	    .fgx{
+		    background-color: #f6f3f3;
+			height: 30px;
+			line-height: 30px;
+			font-weight: bold;
+			border-bottom:1px solid #e1dbdb;
+		}
+		.hide{
+		    display: none;
+		}
+		.btn{ background-color:#FFF; position:absolute;top:15px;right:10px;border:1px solid #CDCDCD;height:30px;width:70px;}
+		.file{ position:absolute; top:15px; right:10px;opacity: 0;height:30px !important;width:70px !important;z-index:99; }
+		#file{
+		    position: absolute;
+			top: 0;
+			left: 0;
+		    margin-right:14px;
+		    background-image: url(../../image/large.png);
+            background-repeat: no-repeat;
+            background-position: right center;
+            background-size: 8px 13px;
+			width: 100%;
+			height: 100%;
+	    }
+		span{color: #f00}
+		#uploadfile .btnPosition{
+		    width:80px;
+		}
+		#fileText{
+		    width: 220px;
+		    padding: 0;
+			display: inline-block;
+		}
+		.fileBox{
+		    position: relative;
+			margin: 0 14px;
+		}
+    </style>
+</head>
+<body>
+	<form id="form" action="" enctype="multipart/form-data">
+	    <!--基本信息分隔线-->
+		<div class="fgx">
+		    <div class="columnName" >基本信息</div>
+		</div>
+        <div class="row flex-wrap">
+            <div class="columnName" ><span>*</span>用户账号</div>
+            <input class="flex-con" name="username" type="text" placeholder="请输入用户账号"/>
+        </div>
+		<div class="row flex-wrap">
+            <div class="columnName" ><span>*</span>用户密码</div>
+            <input class="flex-con" name="password" type="password" placeholder="请输入用户密码"/>
+        </div>
+        <div class="row flex-wrap">
+            <div class="columnName" ><span>*</span>确认密码</div>
+            <input class="flex-con"  id="confirmPW" type="password" placeholder="请输入确认密码"/>
+        </div>
+        <div class="row flex-wrap">
+            <div class="columnName" style="float:left"><span>*</span>密码问题</div>
+            <div class="bgImg flex-con">
+                <div class="select">
+                   <select name="question">
+                      <option value="0" selected="selected">请选择</option>
+                      <option>您的家乡是？</option>
+					  <option>您初中的语文老师是？</option>
+					  <option>您最尊重的人是？</option>
+					  <option>您最爱吃的菜是？</option>
+					  <option>您最爱读的书是？</option>
+					  <option>您最喜欢的一首歌是？</option>
+					  <option>您最喜欢的运动是？</option>
+					  <option>您最喜欢的电影是？</option>
+					  <option>您最喜欢的节目是？</option>
+					  <option>您最喜欢的地方是？</option>
+					  <option>您最想做的事情是？</option>
+					  <option>您最难忘的事情是？</option>
+                   </select>
+               </div>
+            </div>  
+        </div>
+        <div class="row flex-wrap">
+            <div class="columnName" ><span>*</span>问题答案</div>
+            <input class="flex-con" name="answer" type="text" placeholder="请输入问题答案"/>
+        </div>
+		<div class="row flex-wrap">
+            <div class="columnName" style="float:left"><span>*</span>用户类别</div>
+            <div class="bgImg flex-con">
+                <div class="select">
+                   <select id="zuzhiType" name="usertype">
+                      <option value="0">公民</option>
+                      <option value="1">法人</option>
+					  <option value="2">其他组织</option>
+                   </select>
+               </div>
+            </div>  
+        </div>
+		<!--详细资料分隔线-->
+		<div class="fgx">
+		    <div class="columnName" >详细资料</div>
+		</div>
+
+		    <div class="row flex-wrap " id="realname">
+                <div class="columnName" ><span>*</span>用户姓名</div>
+                <input class="flex-con" name="realname" type="text" placeholder="请输入用户姓名"/>
+            </div>
+		    <div class="row flex-wrap" id="gender">
+                <div class="columnName" style="float:left">用户性别</div>
+                <div class="bgImg flex-con">
+                    <div class="select">
+                       <select name="gender">
+                          <option value="1" selected="selected">男</option>
+                          <option value="2">女</option>
+                       </select>
+                   </div>
+                </div>  
+            </div>
+		    <div class="row flex-wrap" id="borndate">
+                <div class="columnName"><span>*</span>出生日期</div>
+				<div class="bgImg flex-con">
+                    <div class="select">
+                       <input name="borndate" type="date" placeholder="请输入出生日期"/>
+                    </div>
+                </div>
+            </div>
+		    <div class="row flex-wrap" id="id_card">
+                <div class="columnName" ><span>*</span>身份证号</div>
+                <input class="flex-con" name="id_card" type="text" placeholder="请输入身份证号"/>
+            </div>
+		    <div class="row flex-wrap" id="uploadfile">
+                <div class="columnName twoRow"><span>*</span>身份证扫描件上传</div>
+				<div class="flex-con fileBox">
+				    <input id="fileText" type="text" readonly="readonly" />
+				    <span id="file" onclick="photo()"></span>
+				</div>
+            </div> 
+			<div id="filePath" class="hide"></div>
+		    <div class="row flex-wrap" id="company">
+                <div class="columnName" >所在公司</div>
+                <input class="flex-con" name="company" type="text" placeholder="请输入所在公司"/>
+            </div>
+		    <div class="row-bg flex-wrap" id="remark">
+                <div class="columnName" >自我描述</div>
+                <textarea class="flex-con" name="remark" placeholder="请输入自我描述"></textarea>
+            </div>
+		
+		<!--联系方式分隔线-->
+		<div class="fgx">
+		    <div class="columnName" >联系方式</div>
+		</div>
+		<div class="row flex-wrap">
+            <div class="columnName" >电话号码</div>
+            <input class="flex-con" name="tel" type="text" placeholder="请输入电话号码"/>
+        </div>
+		<div class="row flex-wrap">
+            <div class="columnName" ><span>*</span>手机号码</div>
+            <input class="flex-con" name="mobile" type="text" placeholder="请输入手机号码"/>
+        </div>
+		<div class="row flex-wrap">
+            <div class="columnName" >电子邮箱</div>
+            <input class="flex-con" name="email" type="text" placeholder="请输入电子邮箱"/>
+        </div>
+		<div class="row flex-wrap">
+            <div class="columnName" >通信地址</div>
+            <input class="flex-con" name="address" type="text" placeholder="请输入通信地址"/>
+        </div>
+		<div class="row-yzm">
+            <div class="columnName" >验证码</div>
+            <input type="text" name="verificationCode" placeholder="请输入验证码" />
+			<img id="yzmImg" />
+        </div>
+        <div class="submit">提交
+            <input type="button" onclick="register()" />
+        </div>
+		<div style="height:20px;width:100%;"></div>
+    </form>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/ajax.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	    document.getElementById('yzmImg').src=util.imgUrl();
+	    document.getElementById('yzmImg').onclick=function(){
+	        this.src=util.imgUrl();
+	    } 
+		var realname=document.getElementById('realname');
+		var gender=document.getElementById('gender');
+		var borndate=document.getElementById('borndate');
+		var id_card=document.getElementById('id_card');
+		var uploadfile=document.getElementById('uploadfile');
+		var remark=document.getElementById('remark');
+		api.addEventListener({
+	        name:'getPicture'
+        },function(ret,err){
+		    var data=ret.value.path;
+			document.getElementById('filePath').innerHTML=data;
+			var newData=data.substring(data.lastIndexOf('/')+1);
+			document.getElementById('fileText').value=newData;
+        });
+	    document.getElementById('zuzhiType').onchange=function(){
+		    if(this.value=='0'){
+			    realname.innerHTML='<div class="columnName" ><span>*</span>用户姓名</div><input class="flex-con" name="realname" type="text" placeholder="请输入用户姓名"/>';
+			    gender.style.display='';
+			    borndate.style.display='';
+			    id_card.innerHTML='<div class="columnName" ><span>*</span>身份证号</div><input class="flex-con" name="id_card" type="text" placeholder="请输入身份证号"/>';
+			    uploadfile.innerHTML='<div class="columnName twoRow"><span>*</span>身份证扫描件上传</div><div class="flex-con fileBox"><input id="fileText" type="text" readonly="readonly"/><span id="file" onclick="photo()"></span></div>';
+			    remark.innerHTML='<div class="columnName" >自我描述</div><textarea class="flex-con" name="remark" placeholder="请输入自我描述"></textarea>'; 
+			}else{
+			    realname.innerHTML='<div class="columnName"><span>*</span>组织名称</div><input class="flex-con" name="realname" type="text" placeholder="请输入法人或其他组织名称"/>';
+			    gender.style.display='none';
+			    borndate.style.display='none';
+			    id_card.innerHTML='<div class="columnName"><span>*</span>机构代码</div><input class="flex-con" name="id_card" type="text" placeholder="请输入组织机构代码"/>';
+			    uploadfile.innerHTML='<div class="columnName twoRow" style="line-height: 20px"><span>*</span>组织机构<span style="opacity:0">字</span>代码扫描件上传<span style="opacity:0">字</span></div><div class="flex-con fileBox"><input id="fileText" type="text" readonly="readonly"/><span id="file" onclick="photo()"></span></div>';
+			    remark.innerHTML='<div class="columnName" >公司描述</div><textarea class="flex-con" name="remark" placeholder="请输入公司描述"></textarea>';
+			}
+	    }
+	};
+	
+	function register(){
+	    var username1=$api.dom('input[name="username"]').value;
+	    var password1=hex_md5($api.dom('input[name="password"]').value);
+		var password2=hex_md5(document.getElementById('confirmPW').value);
+		var question1=$api.dom('select[name="question"]').value;
+		var answer1=$api.dom('input[name="answer"]').value;
+		var usertype1=$api.dom('select[name="usertype"]').value;
+		var realname1=$api.dom('input[name="realname"]').value;
+		var gender1=$api.dom('select[name="gender"]').value;
+		var borndate1=$api.dom('input[name="borndate"]').value;
+		var id_card1=$api.dom('input[name="id_card"]').value;
+		var remark1=$api.dom('textarea[name="remark"]').value;
+		var tel1=$api.dom('input[name="tel"]').value;
+		var mobile1=$api.dom('input[name="mobile"]').value;
+		var email1=$api.dom('input[name="email"]').value;
+		var address1=$api.dom('input[name="address"]').value;
+		var verificationCode1=$api.dom('input[name="verificationCode"]').value;
+		var filePath=document.getElementById('filePath').innerHTML;
+		if(username1==""){
+		    api.toast({msg: "请输入用户账号"});
+			return false;
+		}
+		if($api.trimAll($api.dom('input[name="password"]').value)==''){
+		    api.toast({msg: '请输入新密码'});
+		    return false;
+		}else if(password1!=password2){
+		    api.toast({msg: '两次输入的密码不一致'});
+			return false;
+		}
+		if(question1=="0"){
+		    api.toast({msg: "请选择密码问题"});
+			return false;
+		}
+		if(answer1==""){
+		    api.toast({msg: "请输入问题答案"});
+			return false;
+		}
+		if(usertype1=="0"){
+		    if(realname1==""){
+		        api.toast({msg: "请输入用户姓名"});
+			    return false;
+		    }
+		    if(borndate1==""){
+		        api.toast({msg: "请输入出生日期"});
+		    	return false;
+		    }
+		    if(id_card1==""){
+		        api.toast({msg: "请输入身份证号"});
+		    	return false;
+		    }
+		    if(filePath==""){
+		        api.toast({msg: "请上传身份证扫描件"});
+		    	return false;
+		    }  
+		}else{
+		    if(realname1==""){
+		        api.toast({msg: "请输入组织名称"});
+			    return false;
+		    }
+		    if(id_card1==""){
+		        api.toast({msg: "请输入机构代码"});
+		    	return false;
+		    }
+		    if(filePath==""){
+		        api.toast({msg: "请上传组织机构代码扫描件"});
+		    	return false;
+		    }
+		}  
+		if(mobile1==""){
+		    api.toast({msg: "请输入手机号码"});
+		    return false;
+		}
+		if(verificationCode1==""){
+		    api.toast({msg: "请输入验证码"});
+		    return false;
+		}
+	    var params={
+		    values:{
+			    username: username1,
+				question: question1,
+				answer: answer1,
+				password: password1,
+				usertype: usertype1,
+				realname: realname1,
+				gender: gender1,
+				borndate: borndate1,
+				id_card: id_card1,
+				remark: remark1,
+				tel: tel1,
+				mobile: mobile1,
+				email: email1,
+				address: address1,
+				verificationCode: verificationCode1
+			},
+			files: {uploadfile: filePath}
+		};
+	    util.post('xzfy/register',params,function(ret){
+		    if(!ret.respCode){
+			    api.toast({
+				    msg: "账号注册成功！",
+					duration: 1000,
+					location: "middle"
+				});
+			    var timer=setTimeout(switchPage,1500);
+			}else if(ret.respCode=="40005"){
+			    api.toast({msg: JSON.stringify(ret.errorMsg)});
+			}else{
+		        api.toast({msg: JSON.stringify(ret.errorMsg)});
+				document.getElementById('yzmImg').src=util.imgUrl();
+			}
+		});
+	}
+	
+    function photo() {
+		api.openFrame({
+	        name: 'getPicture',
+	        url: 'getPicture.html',
+            animation:{type:"none"},
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+    }
+	function photo1() {
+		api.openFrame({
+	        name: 'dialog',
+	        url: 'dialog.html',
+            animation:{type:"none"},
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+    }
+    function switchPage(){
+	    api.openWin({
+	        name: 'login',
+	        url: 'login.html',
+	        vScrollBarEnabled: false,
+	        hScrollBarEnabled: false,
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        }); 
+		api.closeWin({
+		    name: 'register',
+            animation:{type:"none"}
+        });
+	}	
+	
+</script>
+</html>

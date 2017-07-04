@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>查看举报</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css" />
+    <style>
+        html{
+    		font-size: 62.5%;
+    	}
+    	body{
+    		background-color: #f6f6f6;
+    	}
+		#header{
+		   position: fixed;
+		   top: 0;
+    	   height: 36px;
+    	   line-height: 36px;
+    	   width: 100%;
+    	   background-color: #eeeeee;
+    	}
+    	#header .center{
+    	   width: 100px;
+    	   height: 36px;
+    	   margin: 0 auto;
+           text-align: center;
+    	}
+    	.center{
+    	   text-align: center;
+    	}
+    	#header .choose{
+    	   float: right;
+    	   background: url(../../../image/lb.png) no-repeat right center;
+    	   background-size: 20px 17px;
+    	   margin-right: 1rem;
+    	   height: 100%;
+    	   width: 50px;  
+    	}
+        #main{
+    	   background-color: #ffffff;
+        }
+        #main .row{
+           border-bottom: 1px solid #e1dbdb;
+           padding: 10px 6px 10px 14px;    
+           word-break: break-all;
+        }
+        #main .ellipsis{
+           width: 100px;
+           overflow: hidden;
+           white-space: nowrap;
+           text-overflow: ellipsis;
+        }
+        #main .content{
+           background-image: url(../../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+           padding-right: 24px;
+        }
+        #main .userInfo{
+           margin-top: 10px;
+        }
+        #main .userInfo li:nth-child(2){
+           margin-left: -40px;
+           color: #b7b7b7;
+        }
+        #complainStatus{
+        width: 100%;
+        height: 100%;
+        display: none;
+        position: absolute;
+        top: 0;
+        }
+        #container{
+    	    height: 100%;
+    	    width: 100%;
+    	    opacity: .4;
+    	    background: #000000;
+    	}
+    	#content{
+    	   width: 100%;
+    	   position: absolute;
+    	   top: 0;
+    	   background-color: #ffffff;
+    	   padding-bottom: 10px;
+    	   border-bottom: 1px solid #7e7c7c;
+    	}
+        #dialog{
+           display: none;
+           position: fixed;
+		   top: 36px;
+           width: 100%;
+           height: 100%;
+           background-color: transparent;
+        }
+        #dialog input[type="text"]{
+           width: 280px;
+           padding-left: 15px;
+		   padding-bottom: 3px;
+        }
+        #dialog input[type="date"]{
+           width: 110%;
+		   padding-left: 10px;
+		   padding-top: 5px;
+        }
+        #dialog .row-time{
+           padding: 10px;
+           height: 55px;
+		   width: 100%;
+           line-height: 30px;
+		   border-bottom: 1px solid #e1dbdb;
+        }
+        input::-webkit-datetime-edit-fields-wrapper{
+           background-color: transparent;
+        }
+       .bgImg{
+           float: left;
+           background-image: url(../../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+           margin-left: 15px;
+           height: 100%;
+        }
+        select{
+            background-color: transparent !important;
+            border: none;
+	     	width: 120%;
+        }
+        .select{
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        #dialog .row input{
+           display:block;
+	       outline: none;
+           width: 100%;
+           height: 50px;
+           padding: 0 1em;
+           transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+		a{
+		   width: 120px;
+		   overflow: hidden;
+		   border-bottom: 2px solid  #747070;
+		}
+		.hide{
+		   display: none;
+		}
+    </style>
+</head>
+<body>
+    <div id="header">
+         <div class="choose" onclick="toggle()"></div>
+         <div class="center">查看举报</div>
+	</div>
+	<div style="height: 36px;"></div>
+	<!--默认隐藏dialog-->
+	<div id="dialog" >
+	    <div id="container" onclick="toggle()"></div>
+	    <div id="content">
+		    <div class="row-time flex-wrap">
+		         <span><span style="opacity:0">人</span>发表人</span>
+		         <input type="text" name="publisher" class="flex-con" placeholder="请输入发表人" />
+	        </div>
+		    <div class="row-time flex-wrap">
+		         <span>受理号码</span>
+		         <input type="text" name="acceptNum" class="flex-con"  placeholder="请输入受理号码" />
+	        </div>
+	        <div class="row-time flex-wrap">
+                 <div style="float:left">处理状态</div>
+                 <div class="bgImg flex-con">
+                     <div class="select3">
+                         <select name="status" id="status" style="margin-left:-4px">
+                            <option value="">全部</option>
+                            <option value="0">未处理</option>
+                            <option value="1">已处理</option>
+                         </select>
+                    </div>
+                </div>  
+            </div>
+	        <div class="flex-wrap" style="padding-top:10px;">
+	            <div class="flex-con center">
+				    <span class="quxiao" onclick="toggle()">取消</span> 
+	            </div>
+	            <div class="flex-con center">
+				    <span class="queding" onclick="search()">确定</span> 
+	            </div>
+	        </div>
+	   </div>      
+	</div>
+		
+	<div id="main">
+        <ul id="ajaxBox">
+            <!-- <li class="row">
+                <div class="content">
+                    <div class="ellipsis">20160822023233221</div>
+                    <ul class="userInfo flex-wrap">
+                        <li class="flex-con">戴先生</li>
+                        <li class="flex-con">已处理</li>
+                    </ul>
+                </div>
+            </li> -->
+        </ul>
+		<div class="pages hide"></div>
+	</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript" src="../../../script/jquery-3.0.0.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	    
+	    var pageNumber = 1;
+		var pageSizes = 10;
+		var searchTag=false;       //是否查询标记
+		var pageParam = api.pageParam;
+		var publisher = pageParam.publisher;
+		var acceptNum = pageParam.acceptNum;
+		var status = pageParam.status;
+		var adSearchFlag = pageParam.adSearchFlag;
+		if(adSearchFlag){          //监听是否站内检索查询，若为是则将searchTag赋值为true，同时给查询条件赋值
+		    searchTag=true;
+		    $api.val($api.dom('input[name="publisher"]'), publisher);
+		    $api.val($api.dom('input[name="acceptNum"]'), acceptNum);
+			document.getElementById("status").value = status;  
+		}
+		api.addEventListener({     //监听是否查询，查询则将searchTag赋值为true
+	        name:'searchEvent',
+	        extra:{}
+		}, function(ret, err){
+		    pageNumber = 1;
+			searchTag = true;
+		});
+		if(searchTag){
+		    searchAjax(pageNumber,pageSizes,false);
+		}else{
+		    loadAjax(pageNumber,pageSizes,false);
+		}
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#E5E5E5',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function(ret, err){
+			if(searchTag){
+			    searchAjax(1,10,false);
+			}else{
+			    loadAjax(1,10,false);
+			}
+			pageNumber = 1; //初始化pageNumber，防止pageNumber>pages时，下拉刷新后无法加载更多的bug。
+		});
+		api.addEventListener({
+			name:'complainSwitch'
+		},function(ret,err){
+		    loadAjax(1,10,false);
+		});
+		api.addEventListener({
+	        name:'scrolltobottom',
+	        extra:{threshold:100}
+		}, function(ret, err){
+		    var pages=document.getElementsByClassName('pages')[0].innerHTML;
+		    if(pageNumber>pages){
+			    api.toast({
+                    msg: '没有更多了',
+                    duration: 1000,
+                    location: 'bottom'
+                });
+				return false;
+			};
+			pageNumber=pageNumber+1;
+			if(searchTag){     //如果数据是通过搜索得到，调用searchAjax()函数
+			    searchAjax(pageNumber,pageSizes,true);
+			}else{             //未使用搜索，调用loadAjax()函数
+			    loadAjax(pageNumber,pageSizes,true); 
+            }
+			
+		});
+		
+	};
+	function loadAjax(pageNum,pageSize,pullTag){   //pullTag为是否下拉标记
+	    var params={
+		    values: {
+			    pageNum: pageNum,
+				pageSize: pageSize
+			}
+		};
+		if(pullTag){     //页面加载调用post
+	        util.postPull('complaint/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData){
+		    	    var data = ret.respData.dataList;
+		    	    var html=transformHtml(data);
+                    $api.append($api.dom("#ajaxBox"),html);
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}else{           //下拉页面加载调用post
+		    util.post('complaint/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData){
+		    	    var data = ret.respData.dataList;
+		    	    var html=transformHtml(data);				
+		    		document.getElementById("ajaxBox").innerHTML=html;
+		    		document.getElementsByClassName('pages')[0].innerHTML=ret.respData.pages;
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}
+	}
+
+	function search(){
+	    toggle();
+	    searchAjax(1,10,false);
+		api.sendEvent({
+            name: 'searchEvent',
+            extra: {
+            }
+        });
+	}
+	function searchAjax(pageNum,pageSize,pullTag){
+	    var acceptNum=$api.dom('input[name="acceptNum"]').value;
+		var status=$api.dom('select[name="status"]').value;
+		var publisher=$api.dom('input[name="publisher"]').value;
+	    var params={
+		    values: {
+			    acceptNum: acceptNum,
+			    status: status,
+				publisher: publisher,
+				pageNum: pageNum,
+				pageSize: pageSize
+			}
+		};
+		if(pullTag){ 
+	        util.postPull('complaint/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData){
+		    	    var data = ret.respData.dataList;
+		    	    var html=transformHtml(data);
+		    		$api.append($api.dom("#ajaxBox"),html);	
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}else{
+		    util.post('complaint/list',params,function(ret){
+		        if(!ret.respCode&&ret.respData){
+		    	    var data = ret.respData.dataList;
+		    	    var html=transformHtml(data);
+		    		document.getElementById("ajaxBox").innerHTML=html;
+		    		document.getElementsByClassName('pages')[0].innerHTML=ret.respData.pages;
+		    	}else{
+		    	    api.toast({msg: ret.errorMsg});
+		    	}
+		    });
+		}
+	}
+    
+	function transformHtml(data){
+	    var dataLength = data.length;
+		var html='';
+		for(var i=0;i<dataLength;i++){
+		    var status="";
+		    if(data[i].status=="0"){
+			    status="未处理";
+			}else{
+			    status="已处理";
+			}
+			var acceptNum=data[i].acceptNum;
+			var publisher=data[i].publisher;
+			html+='<li class="row"><div class="content">';
+            html+='<div class="ellipsis acceptNum">'+acceptNum+'</div>';
+            html+='<ul class="userInfo flex-wrap"><li class="flex-con publisher">'+publisher+'</li>';    
+            html+='<li class="flex-con status">'+status+'</li></ul></div></li>';
+		}
+		return html;
+	}
+    function toggle(){
+        $('#dialog').slideToggle();
+    }
+</script>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>抽查公告文章内容</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+    <style>
+    body{
+        background-color:#ffffff;
+    }
+    ul,li{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    #header{
+    	background-color:#0084F4;
+    }
+    #header div {
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+		color: #FFFFFF;
+		position: relative;
+	    font-size: 18px;
+	}
+	#header .left{
+	    float: left;
+	    background: url(../../../image/less@3x.png) no-repeat  left center;
+		background-size: 12px 19px;
+		height: 100%;
+		width: 50px;
+		color: #fff;
+		padding-left: 19px;
+		font-size: 14px;
+	}
+	#header .right{
+	  float: right;
+	  padding-top: 8px;
+	  padding-right: 10px;
+	  width: 50px;
+	  text-align: right;
+	}
+	#header .right img{
+	    width: 24px;
+    }
+    .btnhover{
+        background-color: #00aeef !important;
+    }
+    .backBox{
+       width: 60px;
+       height: 100%;
+       padding-left: 10px;
+       z-index: 999;
+    }
+    </style>
+</head>
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header id="header">
+            <!-- <div class="right" tapmode="btnhover">
+    	        <img src="../../../image/fenx@3x.png" />
+    	    </div> -->
+    	    <div class="backBox" tapmode="btnhover">
+    	       <div class="left" onclick="goBack()">返回</div>
+    	    </div>
+        </header>
+        <div id='main' class="flex-con">
+    
+        </div>
+    </div>	
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript">
+	
+	apiready = function(){
+		/*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+		api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+		var pageParam = api.pageParam; 
+		api.openFrame({
+            name: 'noticeZLpubFrame',
+            url: 'noticeZLpubFrame.html',
+            rect: {
+                x: 0,
+                y: $api.dom('#header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            pageParam: {
+				title: pageParam.title,
+				content: pageParam.content,
+				period: pageParam.period
+            },
+            bounces: false,
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+	};
+	
+	function goBack(){
+	    api.openWin({
+	        name: 'noticeZL',
+	        url: 'noticeZL.html',
+	        vScrollBarEnabled: false,
+	        hScrollBarEnabled: false,
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        });
+		api.closeWin({});
+    }
+    
+    /*function share(){
+        api.openFrame({
+	        name: 'noticeShare',
+	        url: 'noticeShare.html',
+	        rect: {
+		          x:0,
+		          y:0,
+		          w:'auto',
+		          h:'auto'
+	        }
+        });
+    }*/
+</script>
+</html>

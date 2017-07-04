@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>行政复议咨询</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css" />
+    <style>
+    	html{
+    		font-size:62.5%;
+    	}
+    	body{
+    		font-size:1.4rem;
+    		background-color:#fff;
+    	}
+    	#header{
+    	    background-color:#0084F4;
+    	}
+    	#header div {
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				color: #FFFFFF;
+				position: relative;
+				font-size: 18px;
+	    }
+    	#header .left{
+		   background: url(../../../image/less@3x.png) no-repeat  left center;
+		   background-size: 12px 19px;
+		   height: 100%;
+		   width: 50px;
+		   color: #fff;
+		   padding-left: 19px;
+		   font-size: 14px;
+		}
+		#header .center{
+		    width:100px;
+		    margin:0 auto;
+			text-align: center;
+			color: #FFFFFF;
+			position: relative;
+			font-size: 18px;
+		}
+		#switch{
+		    text-align: center;
+		    font-size: 18px;
+		    font-weight: 900;
+		    height: 50px;
+		    line-height: 50px;
+		}
+		#switch div:nth-child(1){
+		    color: #474747;
+		}
+		#switch div:nth-child(2){
+		    color: #474747;
+		}
+		#switch div:nth-child(1).active{
+		    color: #0084F4;
+		    background: url(../../../image/line@2x.png) no-repeat  center bottom;
+		    background-size:50%;
+		}
+		#switch div:nth-child(2).active{
+		    color: #0084F4;
+		    background: url(../../../image/line@2x.png) no-repeat  center bottom;
+		    background-size:50%;
+		}
+		.btnhover{
+            background-color: #00aeef !important;
+        }
+        .backBox{
+            float: left;
+            width: 60px;
+            height: 100%;
+            padding-left: 10px;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+	<div id="wrap" class="flex-wrap flex-vertical">
+	    <header id="header">
+	        <div class="backBox" tapmode="btnhover">
+	            <div class="left" onclick="goBack()">返回</div>
+	        </div>
+			<div class="center">行政复议</div>
+		</header>
+		<div id="switch" class="flex-wrap">
+		    <div onclick="switchGroup(this,0)" class="flex-con active">回复咨询</div>
+		    <div onclick="switchGroup(this,1)" class="flex-con">我要咨询</div>
+		</div>
+		<div id="main" class="flex-con">
+
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	    /*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+		
+	    api.addEventListener({
+			name:'keyback'
+		},function(ret,err){
+			goBack();
+		});
+		
+		api.addEventListener({
+			name:'xzfySwitch'
+		},function(ret,err){
+		    var switchList = $api.domAll('#switch div');
+			$api.removeCls(switchList[1], 'active');
+			$api.addCls(switchList[0], 'active');
+		});
+		
+	     api.openFrameGroup({
+			name : 'xzfyGroup',
+			scrollEnabled : false,
+			bounces : false,
+			background : '#f6f6f6',
+			rect : {
+				x : 0,
+				y : $api.dom('#header').offsetHeight+$api.dom('#switch').offsetHeight,
+				w : api.winWidth,
+				h : $api.dom('#main').offsetHeight
+			},
+			preload : 1,
+			index : 0,
+			frames : [
+			{
+				name : 'xzfyRead',
+				bounces : false,
+				vScrollBarEnabled:false, 
+				url : 'xzfyRead.html'
+			},{
+				name : 'xzfyReport',
+				bounces : false,
+				vScrollBarEnabled:false,
+				url : 'xzfyReport.html'
+			}]
+		}, function(ret, err) {
+			 if (ret) {
+				//shownevbar(ret.index);
+			 }
+		   }
+		);   
+		    
+    }
+    
+    function switchGroup(tag,index) {
+		if (tag == $api.dom('#switch .active'))
+			return;
+		var switchList = $api.domAll('#switch div');
+		for (var i = 0, len = switchList.length; i < len; i++) {
+			$api.removeCls(switchList[i], 'active');
+		}
+		$api.addCls(switchList[index], 'active');
+		api.setFrameGroupIndex({
+            name: 'xzfyGroup',
+            index: index
+        });
+	}
+    
+    function goBack(){
+		api.closeToWin({
+           name: 'root'
+        });
+    }
+</script>
+</html>

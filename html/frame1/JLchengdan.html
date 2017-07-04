@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>二、三级计量保证体系确认查询</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <style>
+    	html{
+    		font-size: 62.5%;
+    	}
+    	body{
+    		background-color: #f6f6f6;
+    	}
+    	#header{
+    	    background-color:#0084F4;
+			width: 100%;
+    	}
+    	#header div {
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				color: #FFFFFF;
+				position: relative;
+				font-size: 18px;
+	    }
+    	#header .left{
+		   background: url(../../image/less@3x.png) no-repeat  left center;
+		   background-size: 12px 19px;
+		   height: 100%;
+		   width: 50px;
+		   color: #fff;
+		   padding-left: 19px;
+		   font-size: 14px;
+		}
+		#header .center{
+		    width: 160px;
+		    margin:0 auto;
+			text-align: center;
+			color: #FFFFFF;
+			position: relative;
+			font-size: 18px;
+			overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+		}
+		#header .right{
+		    float: right;
+		    margin-right: 10px;
+		    background: url(../../image/sxi@3x.png) no-repeat  right center;
+		    background-size: 18px 18px;
+		    width: 50px;
+		}
+		#main{
+    	   background-color: #ffffff;
+        }
+        #main .row{
+           border-bottom: 1px solid #e1dbdb;
+           padding: 10px 10px 10px 12px;    
+           word-break: break-all;
+        }
+        #main .content{
+           background-image: url(../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+           padding-right: 24px;
+        }
+        #main .info{
+           margin-top: 10px;
+           font-size: 14px;
+           color: #6a6767;
+        }
+		#container{
+    	    height: 100%;
+    	    width: 100%;
+    	    opacity: .4;
+    	    background: #000000;
+    	}
+    	#content{
+    	   width: 100%;
+    	   position: absolute;
+    	   top: 0;
+    	   background-color: #ffffff;
+    	   padding-bottom: 10px;
+    	   border-bottom: 1px solid #7e7c7c;
+    	}
+        #dialog{
+           display: none;
+           position: fixed;
+		   top: 50px;
+           width: 100%;
+           height: 100%;
+           background-color: transparent;
+        }
+        #dialog input[type="text"]{
+           width: 280px;
+           border-bottom: 2px solid  #747070;
+           padding-left: 10px;
+        }
+        #dialog input[type="date"]{
+           width: 110%;
+		   padding-left: 10px;
+		   padding-top: 5px;
+        }
+        #dialog .row-time{
+           padding: 10px;
+           height: 50px;
+		   width: 100%;
+           line-height: 30px;
+        }
+        input::-webkit-datetime-edit-fields-wrapper{
+           background-color: transparent;
+        }
+       .bgImg{
+           float: left;
+           background-image: url(../../image/large.png);
+           background-repeat: no-repeat;
+           background-position: right center;
+           background-size: 8px 13px;
+           margin-left: 12px;
+           height: 100%;
+        }
+        select{
+            background-color: transparent !important;
+            border: none;
+	     	width: 120%;
+        }
+        .select{
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        #dialog .row input{
+           display:block;
+	       outline: none;
+           width: 100%;
+           height: 50px;
+           padding: 0 1em;
+           transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+		.center{
+    	   text-align: center;
+    	}
+		a{
+		   width: 120px;
+		   overflow: hidden;
+		   border-bottom: 2px solid  #747070;
+		}
+        .btnhover{
+           background-color: #00aeef !important;
+        }
+        .backBox{
+           float: left;
+           width: 60px;
+           height: 100%;
+           padding-left: 10px;
+        }
+        .hide{
+		   display: none;
+		}		
+    </style>
+</head>
+<body>
+<div id="wrap" class="flex-wrap flex-vertical">
+	<header id="header">
+	    <div class="backBox" tapmode="btnhover">
+	        <div class="left" onclick="goBack()">返回</div>
+	    </div>
+	    <div class="right" onclick="search()"></div>
+		<div class="center">承担国家法定计量检定机构任务的授权查询</div>
+	</header>
+	<div id="main" class="flex-con">
+	
+	</div>
+</div>	
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	    /*var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+	    api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+         
+		api.openFrame({
+            name: 'JLchengdanFrame',
+            url: 'JLchengdanFrame.html',
+            rect: {
+                x: 0,
+                y: $api.dom('#header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            bounces: false,
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+		
+	}	
+	
+	function search(){
+	    api.sendEvent({
+            name: 'JLchengdan'
+        }); 
+	}	
+	
+	function goBack(){
+		api.closeToWin({
+		    name: 'root'
+		});
+    }
+
+</script>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>我的主页</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    	body{
+    	    background-color:#f6f6f6;
+    	    font-size: 16px;
+    	}
+    	#setUp{
+    	   background-color:#ffffff;
+    	}
+    	#setUp ul li{
+            background-image:url(../image/large.png);
+            background-repeat:no-repeat;
+            background-position:right center;
+			background-size:8px 13px;
+			border-bottom:1px solid #e1dbdb;
+            margin-right:5px;
+            padding:10px;
+            word-break:break-all;
+        }
+        #setUp img{
+            height:30px;
+            vertical-align:middle;
+            margin-right:10px;
+        }
+
+    </style>
+</head>
+<body>
+
+   <div id='setUp'>
+        <ul>
+            <li onclick="openHelp()"><img src="../image/help@3x.png" />使用帮助</li>
+            <li onclick="openUpdate()"><img src="../image/update@3x.png" />检查更新</li>
+            <li onclick="openAbout()"><img src="../image/about@3x.png" />关于</li>
+        </ul>
+   </div>	
+   
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		api.parseTapmode();
+//		sysUserInfo();
+		//登陆刷新
+		api.addEventListener({
+	        name:'frame2'
+        },function(ret,err){
+			//sysUserInfo();
+        });
+	}
+	function openHelp(){
+				api.openWin({
+		            name: 'help',
+		            url: 'help.html',
+	            	animation:{type:"none"},
+	            	slidBackEnabled: false
+	            });
+			}
+	function openUpdate(){
+			api.openWin({
+	            name: 'checkUpdate',
+	            url: 'checkUpdate.html',
+            	animation:{type:"none"},
+	            slidBackEnabled: false
+            });
+		}
+	function openAbout() {
+			api.openWin({
+	            name: 'about',
+	            url: 'about.html',
+            	animation:{type:"none"},
+	            slidBackEnabled: false
+            });
+		}
+</script>
+</html>

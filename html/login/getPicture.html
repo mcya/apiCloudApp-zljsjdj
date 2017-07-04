@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>拍照</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <style>
+    	html{
+    		height:100%;
+    		font-size:62.5%;
+    		background: rgba(0, 0, 0, 0.1);
+    	}
+    	body{
+    		height:100%;
+    		font-size:18px;
+    		background: rgba(0, 0, 0, 0.1);
+    	}
+    	.pfont{
+    		font-size:18px;
+    	}
+    	.pcolor{
+    		background-color: #F0F0F0;
+    	}
+		#actionSheet{
+		    width: 100%;
+			padding-top:15px;
+			padding-bottom:20px;
+			text-align:center;
+			position:fixed;
+			top:65%;
+			z-index:200;
+			background-color: #fff;
+			}
+		.blueColor{
+            width: 90%;
+		    height: 45px;
+		    line-height: 45px; 
+		    font-size: 18px;
+		    color: #ffffff;
+		    text-align: center;
+		    margin: 15px auto;
+		    position: relative;
+		    background-color:#0689ef;  
+		    border-radius:4px;
+        }
+		.grayColor{
+            width: 90%;
+		    height: 45px;
+		    line-height: 45px; 
+		    font-size: 18px;
+		    color: #ffffff;
+		    text-align: center;
+		    margin: 15px auto;
+		    position: relative;
+		    background-color:#b4b4b4;
+		    border-radius:4px;
+        }
+    </style>
+</head>
+<body>
+<div style="width:100%;height:100%;" onclick="cancel()"></div>
+<div id="actionSheet">
+    <div class="blueColor" onclick="getphoto()">拍照</div>
+	<div class="blueColor" onclick="OpenUIMediaScanner()">从相册选择</div>
+	<div class="grayColor" onclick="cancel()">取消</div>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+    function OpenUIMediaScanner(){
+ 	    api.clearCache();
+	    var UIMediaScanner = api.require('UIMediaScanner');
+	    UIMediaScanner.open({
+	        type: 'picture',
+	        column: 4,
+	        classify: false,
+	        max: 1,
+	        sort: {
+	            key: 'time',
+	            order: 'desc'
+	        },
+	        texts: {
+	            cancelText: '返回',
+	            finishText: '完成'
+	        },
+	        styles: {
+	            bg: '#fff',
+	            mark: {
+	                icon: '',
+	                position: 'bottom_left',
+	                size: 20
+	            },
+	            nav: {
+	                bg: '#0084f4',
+	                stateColor: '#fff',
+	                stateSize: 18,
+	                cancelBg: 'rgba(0,0,0,0)',
+	                cancelColor: '#fff',
+	                cancelSize: 18,
+	                finishBg: 'rgba(0,0,0,0)',
+	                finishColor: '#fff',
+	                finishSize: 18
+	            }
+	        },
+	    	exchange: true,
+	        rotation: true
+	    }, function(ret){
+	    	if(ret){
+                var path = ret.list[0].path;
+                api.sendEvent({
+					name: 'getPicture',
+					extra: {
+					    path: path
+					}
+				});
+				cancel();
+	    	}else{
+	    	    cancel();
+	    	}
+	    });
+    }
+    function getphoto(){
+        api.getPicture({
+            sourceType: 'camera',
+		    encodingType: 'jpg',
+		    mediaValue: 'pic',
+		    destinationType: 'url',
+		    allowEdit: false,
+		    quality: 50,
+    	    targetWidth: 100,
+    	    targetHeight: 100,
+		    saveToPhotoAlbum: false
+        },function(ret,err){
+            if(ret){
+			    api.sendEvent({
+			        name: 'getPicture',
+			        extra: {
+			            path: ret.data
+			        }
+				});
+				cancel();
+            }else{
+                cancel();
+            }
+        });
+    }
+    function cancel(){
+        api.closeFrame({});
+    }
+</script>

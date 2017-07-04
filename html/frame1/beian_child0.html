@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>备案子页面</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+    	html{
+    		font-size: 62.5%;
+    	}
+    	body{
+    		font-size: 1.4rem;
+    		background-color: #f6f6f6;
+    	}
+    	#header{
+    	    background-color:#0084F4;
+    	}
+    	#header div {
+			height: 5rem;
+			line-height: 5rem;
+			text-align: center;
+			color: #FFFFFF;
+			position: relative;
+			font-size: 1.8rem;
+	    }
+    	#header .left{
+		    float: left;
+		    background: url(../../image/less@3x.png) no-repeat  left center;
+		    background-size: 1.2rem 1.9rem;
+		    height: 100%;
+		    width: 5rem;
+		    color: #fff;
+		    padding-left: 1.9rem;
+		    font-size: 1.4rem;
+		 }
+		 #main{
+		    background-color: #ffffff;
+		 }
+		 #main li{
+		    border-bottom: 1px solid #f6f6f6; 
+		 }
+		 #main .flex-wrap span{
+		     word-break: break-all;
+		 }
+		 #main .flex-wrap span:nth-child(odd){
+		     -webkit-box-flex: 1;
+		     -webkit-flex: 1;
+		     flex: 1;
+		     padding: 1.2rem 0 1.2rem 1.4rem;
+		     text-align: left;
+		 }
+		 #main .flex-wrap span:nth-child(even){
+		     -webkit-box-flex: 2;
+		     -webkit-flex: 2;
+		     flex: 2;
+		     padding: 1.2rem 1.4rem 1.2rem 0;
+		     text-align: right;
+		 }
+		 .btnhover{
+             background-color: #00aeef !important;
+         }
+         .backBox{
+             width: 6rem;
+             height: 100%;
+             padding-left: 1rem;
+             z-index: 999;
+         }
+    </style>
+</head>
+<body>
+	<header id="header">
+	     <div class="backBox" tapmode="btnhover">
+	         <div class="left" onclick="goBack()">返回</div>
+	     </div>
+	</header>
+	<div id="main">
+	     <ul>
+	          <li class="flex-wrap">
+	              <span>机构代码1</span>
+	              <span>0001</span>
+	          </li>
+	          <li class="flex-wrap">
+	              <span>机构名称</span>
+	              <span>广州品赫化妆品有限公司</span>
+	          </li>
+	          <li class="flex-wrap">
+	              <span>企业产品标准号</span>
+	              <span>Q000001</span>
+	          </li>
+	          <li class="flex-wrap">
+	              <span>企业产品标准名称</span>
+	              <span>去角质化妆品</span>
+	          </li>
+	          <li class="flex-wrap">
+	              <span>备案号</span>
+	              <span>QB/440100 71 1005-2016</span>
+	          </li>
+	          <li class="flex-wrap">
+	              <span>代替标准号</span>
+	              <span>Q/PHHZ 6-2013</span>
+	          </li>
+	     </ul>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		/*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+	};
+	function goBack(){
+		api.closeToWin({
+            name: 'beian',
+			animation:{
+    type:"fade",                //动画类型（详见动画类型常量）
+    subType:"from_right",       //动画子类型（详见动画子类型常量）
+    duration:100                //动画过渡时间，默认300毫秒
+}
+        });
+    }
+</script>
+</html>

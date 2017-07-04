@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>行政许可</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+    <style>
+    body{
+        background-color:#ffffff;
+    }
+    ul,li{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    #header{
+    	background-color:#0084F4;
+		width:100%;
+		position: fixed;
+    }
+    #header div{
+		height: 50px;
+	    line-height: 50px;
+		text-align: center;
+		color: #FFFFFF;
+		position: relative;
+		font-size: 18px;
+	}
+    #header .left{
+	    background: url(../../../image/less@3x.png) no-repeat  left center;
+		background-size: 12px 19px;
+		height: 100%;
+		width: 50px;
+		color: #fff;
+		padding-left: 19px;
+		font-size: 14px;
+	}
+	#header .center{
+		width:100px;
+		margin:0 auto;
+	    text-align: center;
+	    color: #FFFFFF;
+	    position: relative;
+		font-size: 18px;
+	}
+	#main{
+		 background-color: #ffffff;
+	 }
+	 #main li{
+	    border-bottom: 1px solid #e1dbdb; 
+	 }
+	 #main .flex-wrap span{
+	     word-break: break-all;
+	 }
+	 #main .flex-wrap span:nth-child(odd){
+	     -webkit-box-flex: 2;
+	     -webkit-flex: 2;
+	     flex: 2;
+	     padding: 14px 0 14px 10px;
+	     text-align: left;
+	 }
+	 #main .flex-wrap span:nth-child(even){
+	     -webkit-box-flex: 5;
+	     -webkit-flex: 5;
+	     flex: 5;
+	     padding: 14px 10px 14px 6px;
+	     text-align: right;
+	 	 color: #4c4a4a;
+	 }
+    .btnhover{
+        background-color: #00aeef !important;
+    }
+	.backBox{
+       float: left;
+       width: 60px;
+       height: 100%;
+       padding-left: 10px;
+       z-index: 999;
+    }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="backBox" tapmode="btnhover">
+            <div class="left" onclick="goBack()">返回</div>
+        </div>
+		<div class="center">行政许可</div>
+    </header>
+	<div style="height:50px;"></div>
+	<div id="main">
+	     <ul>
+	          <li class="flex-wrap">
+	              <span>行政许可决定书文号</span>
+	              <span></span>
+	          </li>
+	          <li class="flex-wrap">
+	              <span>项目名称</span>
+	              <span></span>
+	          </li>
+	          <li class="flex-wrap">
+	              <span>审批类别</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>许可内容</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>行政相对人名称</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>统一社会信用代码</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>组织机构代码</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>工商登记码</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>税务登记号</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>居民身份证号</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>法定代表人姓名</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>许可决定日期</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>许可截止期</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>许可机关</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>当前状态</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>地方编码</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>备注</span>
+	              <span></span>
+	          </li>
+			  <li class="flex-wrap">
+	              <span>单位编号</span>
+	              <span></span>
+	          </li>
+	     </ul>
+	</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript">
+	
+	apiready = function(){
+		/*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+		api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+		var pageParam = api.pageParam; 
+		var arr = pageParam.paramArr;
+		document.getElementsByTagName('li')[0].getElementsByTagName('span')[1].innerHTML=arr[0];
+		document.getElementsByTagName('li')[1].getElementsByTagName('span')[1].innerHTML=arr[1];
+		document.getElementsByTagName('li')[2].getElementsByTagName('span')[1].innerHTML=arr[2];
+		document.getElementsByTagName('li')[3].getElementsByTagName('span')[1].innerHTML=arr[3];
+		document.getElementsByTagName('li')[4].getElementsByTagName('span')[1].innerHTML=arr[4];
+		document.getElementsByTagName('li')[5].getElementsByTagName('span')[1].innerHTML=arr[5];
+		document.getElementsByTagName('li')[6].getElementsByTagName('span')[1].innerHTML=arr[6];
+		document.getElementsByTagName('li')[7].getElementsByTagName('span')[1].innerHTML=arr[7];
+		document.getElementsByTagName('li')[8].getElementsByTagName('span')[1].innerHTML=arr[8];
+		document.getElementsByTagName('li')[9].getElementsByTagName('span')[1].innerHTML=arr[9];
+		document.getElementsByTagName('li')[10].getElementsByTagName('span')[1].innerHTML=arr[10];
+		document.getElementsByTagName('li')[11].getElementsByTagName('span')[1].innerHTML=arr[11];
+		document.getElementsByTagName('li')[12].getElementsByTagName('span')[1].innerHTML=arr[12];
+		document.getElementsByTagName('li')[13].getElementsByTagName('span')[1].innerHTML=arr[13];
+		var xk_zt='';  
+		switch(arr[14]){
+		    case '0': 
+			    xk_zt='正常';
+				break;
+			case '1': 
+			    xk_zt='撤销';
+				break;
+			case '2': 
+			    xk_zt='异议';
+				break;
+            default:
+                xk_zt='其他'; 			
+		}
+		document.getElementsByTagName('li')[14].getElementsByTagName('span')[1].innerHTML=xk_zt;
+		document.getElementsByTagName('li')[15].getElementsByTagName('span')[1].innerHTML=arr[15];
+		document.getElementsByTagName('li')[16].getElementsByTagName('span')[1].innerHTML=arr[16];
+		document.getElementsByTagName('li')[17].getElementsByTagName('span')[1].innerHTML=arr[17]; 
+	};
+	
+	function goBack(){
+	    api.openWin({
+	        name: 'sgsZL',
+	        url: 'sgsZL.html',
+	        vScrollBarEnabled: false,
+	        hScrollBarEnabled: false,
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        });
+		api.closeWin({});
+    }
+
+</script>
+</html>

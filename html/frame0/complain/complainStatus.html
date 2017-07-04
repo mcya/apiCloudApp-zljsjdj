@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>查看信件</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css" />
+    <style>
+        html{
+    		font-size: 62.5%;
+    	}
+    	body{
+    		font-size: 14px;
+    		height: initial;
+    	}
+    	#content{
+    	   height: 100px;
+    	   width: 100%;
+    	}
+    	.status{
+    	   border: 1px solid #a5a5a5;
+    	}
+    	.status div{
+    	    background: #ffffff;
+    	    height: 50px;
+    	    line-height: 50px;
+    	    width: 100%;
+    	    text-align: center;
+    	}
+        .status .unhandled{
+            border-bottom: 1px solid #eeeeee;
+        }
+        .status .handled{
+            border-bottom: 1px solid #a5a5a5;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="content" class="flex-wrap">
+	     <div class="flex-con status">
+	         <div class="unhandled">未处理</div>
+	         <div class="handled">已处理</div>
+	     </div>
+	     <div class="flex-con"></div>
+	</div>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var body = $api.dom('body');
+        $api.addEvt(body,'touchend',function(e){
+            var main = $api.dom('#content .status');
+            if(!match(e.target, main)){
+                api.closeFrame();
+            }         
+        });
+        
+        api.animation({
+    name: 'complainStatus',
+    duration: 3000,
+    curve: 'ease_in',
+    repeatCount: 0,
+    translation: {
+        x: -api.winWidth/2,
+        y: 0,
+        z: 0
+    }
+}, function(ret, err) {
+});
+	}
+	
+	function match(src, target){
+        var mark = false;
+        if(src === target){
+            mark = true;
+            return mark;
+        }else{
+            do{
+                src = src.parentNode;
+                if(src === target){
+                    mark = true;
+                    return mark;
+                }
+            }while(src !== document.body && src !== document.documentElement);
+
+            return mark;
+        }
+    }
+   
+</script>
+</html>

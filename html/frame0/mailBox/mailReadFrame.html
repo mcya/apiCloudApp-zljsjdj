@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我要咨询</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../css/report.css"/>
+    <style>
+	body{
+	    background-color: #f6f6f6;
+	}
+	#header{
+    	background-color:#0084F4;
+		position: fixed;
+		top: 0;
+		width: 100%;
+    }
+    #header div {
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+		color: #FFFFFF;
+		position: relative;
+		font-size: 18px;
+	}
+    #header .left{
+	   background: url(../../../image/less@3x.png) no-repeat  left center;
+	   background-size: 12px 19px;
+	   height: 100%;
+	   width: 50px;
+	   color: #fff;
+	   padding-left: 19px;
+	   font-size: 14px;
+	}
+	#header .center{
+	    width:120px;
+	    margin:0 auto;
+		text-align: center;
+		color: #FFFFFF;
+		position: relative;
+		font-size: 18px;
+	}
+	#top{
+	    background-color: #eeeeee;
+	    height: 10px;
+		width: 100%;
+		position: fixed;
+		top: 50px;
+	}
+	.btnhover{
+        background-color: #00aeef !important;
+    }
+    .backBox{
+        float: left;
+        width: 60px;
+        height: 100%;
+        padding-left: 10px;
+        z-index: 999;
+    }
+	input,textarea{ 
+	    color: #666262;
+	}
+    </style>
+</head>
+<body>
+    <header id="header">
+	    <div class="backBox" tapmode="btnhover">
+	        <div class="left" onclick="goBack()">返回</div>
+	    </div>
+		<div class="center">查看信件</div>
+	</header>
+	<div id="top"></div>
+	<div style="height:60px;width:100%;"></div>
+    <form id="form" action="">
+        <div class="row flex-wrap ">
+            <div class="columnName">发表人</div>
+            <input class="flex-con" name="name" type="text"  readonly="readonly" />
+        </div>
+		<div class="row flex-wrap ">
+            <div class="columnName" >发表日期</div>
+            <input class="flex-con" name="sendDate" type="text" readonly="readonly" />
+        </div>
+        <div class="row flex-wrap ">
+            <div class="columnName" >主题</div>
+            <input class="flex-con" name="subject" type="text" readonly="readonly" />
+        </div>
+		<div class="row-bg flex-wrap ">
+            <div class="columnName" >内容</div>
+            <textarea class="flex-con" name="content" readonly="readonly"></textarea>
+        </div>
+		<div class="row-bg flex-wrap ">
+            <div class="columnName" >回复内容</div>
+            <textarea class="flex-con" name="reply" readonly="readonly"></textarea>
+        </div>
+		<div class="row flex-wrap ">
+            <div class="columnName" >回复日期</div>
+            <input class="flex-con" name="replyDate" type="text" readonly="readonly" />
+        </div>
+    </form>
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	    /*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' 
+	    });*/
+	    api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+		var pageParam = api.pageParam;
+	    var name = pageParam.name; 
+		var sendDate = pageParam.sendDate;
+		var subject = pageParam.subject;
+		var content = pageParam.content;
+		var reply = pageParam.reply;
+		var replyDate = pageParam.replyDate;
+		$api.val($api.dom('input[name="name"]'),name);
+		$api.val($api.dom('input[name="sendDate"]'),sendDate);
+		$api.val($api.dom('input[name="subject"]'),subject);
+		$api.val($api.dom('textarea[name="content"]'),content);
+		$api.val($api.dom('textarea[name="reply"]'),reply);
+		$api.val($api.dom('input[name="replyDate"]'),replyDate);
+	};
+	
+	function goBack(){
+	    api.openWin({
+	        name: 'mailMain',
+	        url: 'mailMain.html',
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        }); 
+		api.closeWin({});
+    }
+</script>
+</html>

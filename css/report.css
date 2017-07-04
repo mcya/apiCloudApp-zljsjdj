@@ -1,0 +1,113 @@
+    html{
+        font-size: 62.5%;
+    }
+	#topBanner{
+	    background-color: #eeeeee;
+	    height: 10px;
+		width: 100%;
+		position: fixed;
+		top: 0;
+	}
+    #form{
+	   background-color: #ffffff;
+    }
+    .row{
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        border-bottom: 1px solid #e1dbdb;
+    }
+    .columnName{ 
+        width: 78px;
+        padding-right: 5px;
+        text-align: right;
+    }
+    .row input{
+        display:block;
+		outline: none;
+        width: 100%;
+        height: 60px;
+        padding: 0 1em;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+
+    textarea{
+        width: 100%;
+        height: 100%;
+        padding: .8em 1em;
+    }
+    .row-bg{
+        height: 100px;
+        line-height: 100px;
+		border-bottom: 1px solid #e1dbdb;
+    }
+    .row-yzm{
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        border-bottom: 1px solid #e1dbdb;
+    }
+    .row-yzm input{
+        width: 120px;
+        height: 60px;
+        padding: 0 15px;
+    }
+    .row-yzm img{
+        height: 30px;
+		vertical-align: middle;
+    }
+    .submit{
+        width: 94%;
+		height: 45px;
+		line-height: 45px; 
+		font-size: 18px;
+		color: #ffffff;
+		text-align: center;
+		margin: 20px auto;
+		position: relative;
+		background-color:#0689ef;
+		border-radius:4px;
+    }
+    .submit input{
+        position: absolute;height:100%;width:100%;top:0;left:0;opacity: 0;
+    }
+    span{color: #f00}
+    #footer{
+        height: 20px;
+		width: 100%;
+    }
+    select{
+        background-color: transparent !important;
+        border: none;
+		width: 120%;
+    }
+    .select{
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+    .bgImg{
+        float: left;
+        background-image: url(../image/large.png);
+        background-repeat: no-repeat;
+        background-position: right center;
+        background-size: 8px 13px;
+        margin-right: 14px;
+        margin-left: 12px;
+        height: 100%;
+		width: 100%;
+    }
+	.row-warning{
+	    color: #ae3333;
+	    height: 50px;
+		border-bottom: 1px solid #e1dbdb;
+		padding: 7px 30px;
+		text-align: center;
+	}
+	.row-yzm img{
+	    height:30px;
+	    vertical-align:middle;
+	}
+	.hide{
+	    display: none;
+	}

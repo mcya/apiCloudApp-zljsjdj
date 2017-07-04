@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper.min.css"/>
+    <style>
+    #nav{
+        margin-top: 10px;
+    }
+    #nav ul li{
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        width:50px;
+        height:78px;
+        background-repeat:no-repeat !important;
+        background-size:45px !important;
+        background-position:center top !important;
+        padding-top:48px;
+        text-align:center;
+        font-size:14px;
+        }
+    #nav .ul-1 li:nth-child(1){
+        background:url(../image/tz@3x.png)
+       }
+    #nav .ul-1 li:nth-child(2){
+        background:url(../image/cc@3x.png)
+       }
+    #nav .ul-1 li:nth-child(3){
+        background:url(../image/xz@3x.png)
+       }
+    #nav .ul-1 li:nth-child(4){
+        background:url(../image/yj@3x.png)
+       }
+    #nav .ul-1 li:nth-child(5){
+        background:url(../image/sg@3x.png)
+       }
+       
+     #nav .ul-2 li:nth-child(1){
+        background:url(../image/em@3x.png)
+       }
+    #nav .ul-2 li:nth-child(2){
+        background:url(../image/zx@3x.png)
+       }
+    #nav .ul-2 li:nth-child(3){
+        background:url(../image/ts@3x.png)
+       }
+    #nav .ul-2 li:nth-child(4){
+        background:url(../image/auto@3x.png)
+       }
+    #nav .ul-2 li:nth-child(5){
+        background:url(../image/qw@3x.png)
+       }
+    #telephone{
+        border-top:5px solid #eee;
+        border-bottom:5px solid #eee;
+        padding: 0 14px 10px 14px;
+    }
+    #phone-icon{
+		margin-right: 30px;
+		padding-top: 10px;
+    }
+    #telephone .flex-wrap div{
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;  
+    }
+    #telephone .flex-wrap a{
+        text-decoration:underline;
+        color:#000;
+    }
+    .blue{
+        color:#0084F4;
+    }
+    #footer{
+        padding-top:14px;
+    }
+    #footer ul li{
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        background-repeat:no-repeat !important;
+        background-size:80px !important;
+        background-position:center top !important;
+        padding-top:83px;
+        text-align:center;
+        font-size:14px;
+        }
+    #footer ul li:nth-child(1){
+        background:url(../image/wb@3x.png)
+    }
+    #footer ul li:nth-child(2){
+        background:url(../image/wx@3x.png)
+    }
+    .swiper-pagination .swiper-pagination-bullet{
+        width: 10px;
+        height: 10px;
+    }
+    .swiper-pagination .swiper-pagination-bullet-active{
+        background: #0084f3;
+    }
+    .lianjie{
+        background-image: url(../image/large.png);
+        background-repeat: no-repeat;
+		background-position-x: 120px;
+        background-position-y: center;
+        background-size: 8px 13px;
+        text-align: center;
+        color: #a6a6a6;
+        padding-right: 10px;
+    }
+    </style> 
+</head>
+<body>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">    
+            <div class="swiper-slide" data-hash="slide1"><img src="../image/2@3x.jpg" style="width:100%"></div>
+            <div class="swiper-slide" data-hash="slide2"><img src="../image/@3x.jpg" style="width:100%"></div>
+            <div class="swiper-slide" data-hash="slide3"><img src="../image/banner@3x.png" style="width:100%"></div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div id="nav">
+        <ul class="ul-1 flex-wrap">
+            <li onclick="openW('noticeMain')">通知公告</li>
+            <li onclick="openW('checknoticeMain')">抽查公告</li>
+            <li onclick="openXzfy()">行政复议</li>
+            <li onclick="openW('suggestMain')">意见箱</li>
+            <li onclick="openW('sgsMain')">双公示</li> 
+        </ul>
+        <ul class="ul-2 flex-wrap">
+            <li onclick="openW('mailMain')">局长信箱</li>
+            <li onclick="openW('onlineMain')">在线咨询</li>
+            <li onclick="openW('complainMain')">举报投诉</li>
+            <li onclick="openW('answerMain')">智能问答</li>
+            <li onclick="openW('advancedSearch')">站内检索</li>
+        </ul>
+    </div>
+    <div id="telephone" class="flex-wrap">
+	    <div class="flex-con">
+            <div id="phone-icon">
+                <span>质监局举报投诉电话：</span><br/>
+                <span class="blue">12345</span>、<span class="blue">12365</span>
+            </div>
+            <div class="flex-wrap" style="margin-top:5px">纪检监察举报电话：</div>
+            <div class="flex-wrap">
+                <span class="blue">82338266</span>
+            </div>
+		</div>
+		<div style="width:140px;text-align:center;padding-top:20px">
+		    <img src="../image/tel@3x.png" width="35px"/>
+			<div class="lianjie">政务联系方式</div>
+		</div>
+    </div>
+    <div id="footer">
+        <ul class="ul-1 flex-wrap">
+            <li onclick="photoBrowser('wb')">质监微博</li>
+            <li onclick="photoBrowser('wx')">质监微信</li>
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="../script/ajax.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.js"></script>
+<!-- Swiper JS -->
+<script type="text/javascript" src="../script/swiper.min.js"></script>
+<!-- Initialize Swiper -->
+<script type="text/javascript">
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        paginationClickable: true,
+        spaceBetween: 30,
+        centeredSlides: false,
+        autoplay: 4000,
+        autoplayDisableOnInteraction: false
+    });
+</script>
+<script type="text/javascript">
+	apiready = function(){
+	    /*api.openContacts(function(ret, err) {
+            if (ret && ret.status) {
+                var name = ret.name;
+                var phone = ret.phone;
+            } else {
+
+            }
+        });*/
+	}
+	function openW(type){
+	    var Url = '';
+	    switch(type){
+		    case 'mailMain':
+			    Url = 'frame0/mailBox/mailMain.html';
+				break;
+			case 'complainMain':
+			    Url = 'frame0/complain/complainMain.html';
+				break;
+			case 'noticeMain':
+			    Url = 'frame0/noticeAnnounce/noticeMain.html';
+				break;
+			case 'suggestMain':
+			    Url = 'frame0/suggestBox/suggestMain.html';
+				break;
+			case 'onlineMain':
+			    Url = 'frame0/onlineAsk/onlineMain.html';
+				break;
+			case 'answerMain':
+			    Url = 'frame0/answer/answerMain.html';
+				break;
+			case 'checknoticeMain':
+			    Url = 'frame0/checkNotice/noticeMain.html';
+				break;
+			case 'sgsMain':  
+			    Url = 'frame0/sgs/sgsMain.html';
+				break;
+		    case 'advancedSearch':
+			    Url = 'frame0/advancedSearch/searchMain.html';
+				break;	 
+		}
+        api.openWin({
+	        name: type,
+	        url: Url,
+            animation:{type:"none"},
+	        slidBackEnabled: false,
+	        vScrollBarEnabled: true
+        });    
+	}
+	
+	function openXzfy(){
+	    /*api.openWin({
+	        name: 'login',
+	        url: 'login/login.html',
+	        vScrollBarEnabled: false,
+	        hScrollBarEnabled: false,
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        });*/
+	    var params={
+		    values: null
+		};
+	    util.post('xzfy/login/check',params,function (ret) {
+		    if(ret.respCode==0){
+			    api.openWin({
+	                name: 'xzfyMain',
+	                url: 'frame0/xzfy/xzfyMain.html',
+	                vScrollBarEnabled: false,
+	                hScrollBarEnabled: false,
+                    animation:{type:"none"},
+	                slidBackEnabled: false
+                });          
+			}else{
+			    api.openWin({
+	                name: 'login',
+	                url: 'login/login.html',
+	                vScrollBarEnabled: false,
+	                hScrollBarEnabled: false,
+                    animation:{type:"none"},
+	                slidBackEnabled: false
+                }); 
+			}
+		});
+	    
+	}
+	
+	function photoBrowser(param){
+	    var imgUrl='';
+	    var widgetUrl='';
+	    var openNum= 0;
+	    if(param=='wb'){
+	        imgUrl=util.getHttps()+'uploads/wb@3x.png';
+	        widgetUrl='widget://image/wb@3x.png';
+	    }
+	    if(param=='wx'){
+	        imgUrl=util.getHttps()+'uploads/wx@3x.png';
+	        widgetUrl='widget://image/wx@3x.png';
+	    }
+        var photoBrowser = api.require('photoBrowser');
+        photoBrowser.open({
+            images: [imgUrl], //不支持widget路径（支持fs://、http://）
+            bgColor: '#000'
+        },function(ret,err){
+            if(openNum==0){   //放大图片时，提示信息
+                api.toast({msg:'单击退出图片，长按可扫描二维码'});
+            }
+            openNum++;
+            if(ret.eventType=='click'){
+                photoBrowser.close();
+            }
+            if(ret.eventType=='longPress'){
+                var FNScanner = api.require('FNScanner');
+                FNScanner.decodeImg({path: widgetUrl},function(ret, err){  //要求本地路径（fs://、widget://）
+                    var aimurl=ret.content;
+                    if(ret.status){
+                        photoBrowser.close();
+		                if(api.systemType =="android"){
+                            api.openApp({
+                                androidPkg: 'android.intent.action.VIEW',
+                                mimeType: 'text/html',
+                                uri: aimurl
+                            },function(ret2,err2){
+                                if(ret2){
+		                		    //alert(JSON.stringify(ret2));
+                                }else{
+                                    api.toast({ msg:'打开失败'});
+								}	
+                            });
+                        }else{
+                            api.openApp({
+                                iosUrl: aimurl,
+                                appParam: {'appParam': ''}
+                            },function(ret2,err2){
+                                if(ret2){
+		                		    //alert(JSON.stringify(ret2));
+                                }else{
+                                    api.toast({ msg:'打开失败'});
+                                }
+                            });
+                        }				 
+
+                    }else{
+                        api.toast({msg: JSON.stringify(err)});
+                    }
+                });
+            }
+        });
+    }  
+
+</script>
+</html>

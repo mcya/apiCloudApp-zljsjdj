@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>站内检索</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+    <style>
+    body{
+        background-color:#ffffff;
+    }
+    ul,li{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    #header{
+    	background-color:#0084F4;
+		width: 100%;
+		position: fixed;
+		top: 0;
+    }
+    #header div {
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+		color: #FFFFFF;
+		position: relative;
+	    font-size: 18px;
+	}
+	#header .left{
+	    float: left;
+	    background: url(../../../image/less@3x.png) no-repeat  left center;
+		background-size: 12px 19px;
+		height: 100%;
+		width: 50px;
+		color: #fff;
+		padding-left: 19px;
+		font-size: 14px;
+	}
+	#header .right{
+	  float: right;
+	  padding-top: 8px;
+	  padding-right: 10px;
+	  width: 50px;
+	  text-align: right;
+	}
+	#header .right img{
+	    width: 24px;
+    }
+    .btnhover{
+        background-color: #00aeef !important;
+    }
+    .backBox{
+       width: 60px;
+       height: 100%;
+       padding-left: 10px;
+       z-index: 999;
+    }
+	 #contentBox{
+    	background-color: #ffffff;
+    	word-break: break-all;
+    	padding: 0 10px;
+    }
+    #contentBox .center{
+        text-align: center;
+    }
+    #contentBox .right{
+        text-align: right;
+    }
+    #contentBox .center div{
+        margin: 14px 0 10px;
+        font-size: 18px;
+        color: #000000;
+    }
+    #contentBox li{
+        margin-bottom:14px;
+        color: #484848;
+    }
+	.hide{
+	   display: none;
+	}
+	/*#content p,span,font{
+	   font-size: 14px !important;
+	   word-break: break-all;
+	}*/
+	.period{
+	   font-size:18px;
+	}
+    </style>
+</head>
+<body>
+  
+    <header id="header">
+        <div class="backBox" tapmode="btnhover">
+           <div class="left" onclick="goBack()">返回</div>
+        </div>
+    </header>
+	<div style="height:50px;"></div>
+    <div id='contentBox'>
+        <ul>
+            <li class="center">
+                <div id='title'>
+		  	       <!--ajax加载数据区域-->
+		  	    </div>
+				<p id='pubDate' class="period"><p>
+            <li>
+            <li id="content">
+		       <!--ajax加载数据区域-->
+		    </li>
+        </ul>
+    </div>
+
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script> 
+<script type="text/javascript">
+	
+	apiready = function(){
+		/*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+		api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+		var pageParam = api.pageParam;
+        var title = pageParam.title;
+		var content = pageParam.content;
+		var pubDate = pageParam.pubDate; 
+		document.getElementById('content').innerHTML=content;
+		document.getElementById('title').innerHTML=title;
+		document.getElementById('pubDate').innerHTML=pubDate;
+		var oA=document.getElementsByTagName('a');
+		if(oA.length){
+		    for(var i=0;i<oA.length;i++){
+		        oA[i].setAttribute('href','javascript:void(0)');
+		    }
+		}
+	};
+	
+	function goBack(){
+	    api.openWin({
+	        name: 'searchZL',
+	        url: 'searchZL.html',
+	        vScrollBarEnabled: false,
+	        hScrollBarEnabled: false,
+            animation:{type:"none"},
+	        slidBackEnabled: false
+        });
+		api.closeWin({});
+    }
+    
+    /*function share(){
+        api.openFrame({
+	        name: 'noticeShare',
+	        url: 'noticeShare.html',
+	        rect: {
+		          x:0,
+		          y:0,
+		          w:'auto',
+		          h:'auto'
+	        }
+        });
+    }*/
+</script>
+</html>

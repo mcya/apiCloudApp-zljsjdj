@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>站内检索</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../../../css/report.css"/>
+    <style>
+    html{
+        font-size: 62.5%;
+    } 
+    #header{
+    	background-color:#0084F4;
+		width: 100%;
+    }
+    #header div{
+		height: 50px;
+	    line-height: 50px;
+		text-align: center;
+		color: #FFFFFF;
+		position: relative;
+		font-size: 18px;
+	}
+    #header .left{
+	    background: url(../../../image/less@3x.png) no-repeat  left center;
+		background-size: 12px 19px;
+		height: 100%;
+		width: 50px;
+		color: #fff;
+		padding-left: 19px;
+		font-size: 14px;
+	}
+	#header .center{
+		width: 120px;
+		margin: 0 auto;
+	    text-align: center;
+	    color: #FFFFFF;
+	    position: relative;
+		font-size: 18px;
+	}
+	input,select{
+	    color: #434343;
+	}
+	input[type="date"]{
+	    width: 110%;
+		padding: 20px 5px 0 0;
+	}
+	.select{
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+    .btnhover{
+        background-color: #00aeef !important;
+    }
+    .backBox{
+       float: left;
+       width: 60px;
+       height: 100%;
+       padding-left: 10px;
+       z-index: 999;
+    }
+	.show{
+	   display: block;
+	}
+	form{
+	   display: none;
+	}
+	.hide{
+	   display: none;
+	}
+	span{
+	   color: #000;
+	}
+	#switch{
+	    background-color: #fff;
+	    position: fixed;
+		top: 50px;
+		width: 100%;
+		text-align: center;
+		font-size: 16px;
+		font-weight: 900;
+		height: 50px;
+		line-height: 50px;
+		border-bottom: 1px solid #eeeeee;
+	}
+	#switch div{
+	    color: #5b5959;
+	}
+	#switch div.active{
+		color: #0084F4;
+		background: url(../../../image/line@2x.png) no-repeat  center bottom;
+		background-size:80%;
+	}
+    </style>
+</head>
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header id="header">
+	        <div class="backBox" tapmode="btnhover">
+	           <div class="left" onclick="goBack()">返回</div>
+	        </div>
+	        <div class="center"></div>
+        </header>  
+        <div id="main" class="flex-con">
+		 
+		</div>
+    </div>	
+</body>
+<script type="text/javascript" src="../../../script/api.js"></script>
+<script type="text/javascript" src="../../../script/md5.js"></script>
+<script type="text/javascript" src="../../../script/ajax.js"></script>
+<script type="text/javascript">
+
+	apiready = function(){
+	    
+	    /*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);*/
+		api.setStatusBarStyle({
+            style: 'light'
+        });
+		api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+		var pageParam=api.pageParam;
+		var moduleTag=pageParam.type;
+		$api.html($api.dom('#header .center'),moduleTag+'检索');
+		api.openFrame({
+            name: 'searchModuleFrame',
+            url: 'searchModuleFrame.html',
+            rect: {
+                x: 0,
+                y: $api.dom('#header').offsetHeight,
+                w: 'auto',
+                h: $api.dom('#main').offsetHeight
+            },
+            pageParam: {
+                moduleTag: moduleTag
+            },
+            bounces: false,
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false
+        });
+		
+	};
+	
+
+	function goBack(){
+	    api.openWin({
+	        name: 'searchMain',
+	        url: 'searchMain.html',
+            animation:{type:"none"},
+	        slidBackEnabled: false,
+	        vScrollBarEnabled: false
+        }); 
+		api.closeWin({});
+    }
+ 
+</script>
+</html>

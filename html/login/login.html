@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <style>
+    	html{
+    		font-size:62.5%;
+    	}
+    	body{
+    		font-size:14px;
+			color: #0084f4;
+			background-size: 100%;
+			background-repeat: no-repeat;
+    	}
+		#header{
+    	    background-color:#0084F4;
+			width: 100%;
+        }
+        #header div{
+	    	height: 50px;
+	        line-height: 50px;
+	    	text-align: center;
+	    	color: #FFFFFF;
+	    	position: relative;
+	    	font-size: 18px;
+	    }
+        #header .left{
+	        background: url(../../image/less@3x.png) no-repeat  left center;
+	    	background-size: 12px 19px;
+	    	height: 100%;
+	    	width: 50px;
+	    	color: #fff;
+	    	padding-left: 19px;
+	    	font-size: 14px;
+	    }
+	    #header .center{
+	    	width:100px;
+	    	margin:0 auto;
+	        text-align: center;
+	        color: #FFFFFF;
+	        position: relative;
+	    	font-size: 18px;
+	    }
+		.btnhover{
+            background-color: #00aeef !important;
+        }
+        .backBox{
+           float: left;
+           width: 60px;
+           height: 100%;
+           padding-left: 10px;
+           z-index: 999;
+        }
+		
+		body{
+    		font-size:16px;
+			color: #0084f4;
+    		background-image: url(../../image/bg2@3x.png);
+			background-size: 100%;
+			background-repeat: no-repeat;
+    	}
+		#main{
+		   text-align: center;
+		}
+		#main .img{
+		   padding: 50px 30px;
+		}
+		#main h3{
+		   margin-top: 5px;
+		   font-weight: normal;
+		   font-size: 16px;
+		}
+		.content{
+		   padding: 0 30px;
+		}
+		.border-btm1{
+		   border-bottom: 1px solid #e1dbdb;
+		   height: 45px;
+		   padding: 10px 0;
+		}
+		.border-btm1 img{
+		   width: 25px;
+		}
+		.border-btm1 input{
+		   padding-left: 14px;
+		   color: #0084f4;
+		}
+		.border-btm2{
+		   border-bottom: 1px solid #e1dbdb;
+		   height: 50px;
+		   padding: 10px 0;
+		}
+		.border-btm2 img{
+		   width: 19px;
+		   height: 26px;
+		   margin-left: 3px;
+		}
+		.border-btm2 input{
+		   padding-left: 17px;
+		   color: #0084f4;
+		}
+		.submit{
+           width: 100%;
+		   height: 45px;
+		   line-height: 45px; 
+		   font-size: 18px;
+		   color: #ffffff;
+		   text-align: center;
+		   margin: 60px 0 20px;
+		   position: relative;
+		   background-color:#0689ef;
+		   border-radius:4px;
+        }
+	    .submit input{
+           position: absolute;height:100%;width:100%;top:0;left:0;opacity: 0;
+        }
+	    .register{
+           width: 100%;
+		   height: 45px;
+		   line-height: 45px; 
+		   font-size: 18px;
+		   color: #0084F4;
+		   text-align: center;
+		   margin: 20px 0;
+		   position: relative;
+		   background-color: #ffffff;
+		   border-radius: 4px;
+		   border: 1px solid #ebe9e9;
+        }
+		.register input{
+           position: absolute;height:100%;width:100%;top:0;left:0;opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header id="header">
+	         <div class="backBox" tapmode="btnhover">
+	            <div class="left" onclick="goBack()">返回</div>
+	         </div>
+	         <div class="center">登录</div>
+        </header>
+		<div id="main" class="flex-con">
+		
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/md5.js"></script>
+<script type="text/javascript" src="../../script/ajax.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+
+	    /*var statusBarAppearance = api.statusBarAppearance;
+	    var header = $api.byId('header');
+        $api.fixIos7Bar(header); 
+	    $api.fixStatusBar(header);
+	    api.setStatusBarStyle({
+	       style: 'light' //设置状态栏字体颜色为白色，dark为黑色
+	    });*/
+		api.addEventListener({
+            name: 'keyback'
+        },function(ret,err){
+            goBack();
+        });
+		api.openFrame({
+            name: 'loginFrame',
+            url: 'loginFrame.html',
+            rect: {
+                x: 0,
+                y: $api.dom('#header').offsetHeight,
+                w: 'auto',
+                h: $api.dom('#main').offsetHeight
+            },
+            bounces: false,
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false
+        });
+	};
+	
+	function goBack(){
+	    api.closeToWin({
+		    name: 'root',
+			animation:{
+			    type:"none" 
+			}
+        });
+	}
+</script>
+</html>
